@@ -1,5 +1,8 @@
 package com.mjm.Touchwire;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created with IntelliJ IDEA.
  * User: Marcos
@@ -9,5 +12,27 @@ package com.mjm.Touchwire;
  */
 public class Board
 {
+    public static List<Component> components = new ArrayList<Component>();
+    public static List<Wire> wires = new ArrayList<Wire>();
+
+    public Board()
+    {
+
+    }
+
+
+    public void Draw()
+    {
+        Main.debugText.addDebug("Number of Components: " + components.size());
+
+        for(Component comp : components)
+        {
+            comp.Draw();
+        }
+
+
+
+    }
+
 
 }
