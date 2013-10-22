@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,48 +17,61 @@ import com.mjm.Touchwire.Utililities.DebugDisplayTimed;
 
 public class Main implements ApplicationListener
 {
-
+    //Screen resolution
     public static final int ScreenX = 1280;
     public static final int ScreenY = 800;
 
+    //Basic stuff
     public static SpriteBatch spriteBatch;
     public static ShapeRenderer shapeRender;
     public static InputProcessor input = new Input();
 
+    //Textures
     public static Texture batteryTexture;
+    public static Texture batteryButtonTexture;
     public static Texture defaultTexture;
     public static Texture lightTexture;
+    public static Texture lightButtonTexture;
     public static Texture NegativeTerminalTexture;
     public static Texture PositiveTerminalTexture;
     public static Texture blank;
+    public static Texture clearButtonTexture;
     public static BitmapFont font;
 
+    //GUI and Debug
+    public static GUI gui = new GUI();
     public static DebugDisplay debugText;
     public static DebugDisplayTimed debugTimed;
 
-    public static String compMode = "Battery";
+    private OrthographicCamera cam;
 
     public static Board board;
 
-    static Vector2 lastClick = new Vector2(0,0);
-
-
     @Override
+    //On application creation
     public void create()
     {
+        //Debug constructors
         debugText = new DebugDisplay(20, 780);
         debugTimed = new DebugDisplayTimed(800, 780);
 
+        //Texture loading
         batteryTexture = new Texture(Gdx.files.internal("BatteryPack.png"));
+        batteryButtonTexture = new Texture(Gdx.files.internal("BatteryButton.png"));
         defaultTexture = new Texture(Gdx.files.internal("defaultTexture.png"));
         lightTexture = new Texture(Gdx.files.internal("DigitalLight.png"));
+        lightButtonTexture = new Texture(Gdx.files.internal("LightButton.png"));
         NegativeTerminalTexture = new Texture(Gdx.files.internal("NegativeTerminal.png"));
         PositiveTerminalTexture = new Texture(Gdx.files.internal("PositiveTerminal.png"));
+        clearButtonTexture = new Texture(Gdx.files.internal("clearButton.png"));
         blank = new Texture(Gdx.files.internal("blank.png"));
-
-
         font = new BitmapFont(Gdx.files.internal("Helv25.fnt"), false);
+
+        //Sets up custom input processing
         Gdx.input.setInputProcessor(input);
+
+        //Camera initializing
+        cam = new OrthographicCamera(ScreenX,ScreenY);
 
         spriteBatch = new SpriteBatch();
         shapeRender = new ShapeRenderer();
@@ -72,16 +86,25 @@ public class Main implements ApplicationListener
     }
 
     @Override
+    //Run every frame
     public void render()
     {
+        //Clears screen
         Gdx.gl.glClearColor(.53f, .75f, .89f, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
-        Main.debugText.addDebug("Component Mode: " + compMode);
+        //Sets campera position and updates/applies
+        cam.position.x = ScreenX/2;
+        cam.position.y = ScreenY/2;
+        cam.update();
+        spriteBatch.setProjectionMatrix(cam.combined);
+
+        //Sprite batch drawing
         spriteBatch.begin();
         debugTimed.Draw();
         debugText.Draw();
         board.Draw();
+        gui.Draw();
         spriteBatch.end();
 
         //Fucking shape render lines mess everything up, but them in their own batch for now

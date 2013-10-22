@@ -6,58 +6,79 @@ import com.badlogic.gdx.math.Vector2;
 
 import javax.xml.bind.util.ValidationEventCollector;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Marcos
- * Date: 10/17/13
- * Time: 11:35 PM
- * To change this template use File | Settings | File Templates.
- */
+//The component class is the overarching class of objects to be placed on the board to be wired up
 public class Component
 {
-    public Vector2 Position;
+    public Rectangle Bounds; //Rectangle bounds represent size and location of components
     public Texture texture = Main.defaultTexture;
 
-    public Rectangle posTerminal;
-    public Rectangle negTerminal;
+    //The positive and negative terminals
+    public Terminal posTerminal;
+    public Terminal negTerminal;
 
-
+    //Constructor, needs a position as an argument
     public Component(Vector2 pos)
     {
-        Position = pos;
+        //Sets bounds rectangle position to the position provided, centered based of texture size, size is set to texture
+        Bounds = new Rectangle(pos.x-texture.getWidth()/2,pos.y-texture.getWidth()/2,texture.getWidth(),texture.getHeight());
 
-        posTerminal = new Rectangle(pos.x+70,pos.y+45,32,32);
-        negTerminal = new Rectangle(pos.x+70,pos.y-45,32,32);
-
-
+        //setups up the terminals
+        posTerminal = new Terminal(this, true);
+        negTerminal = new Terminal(this, false);
     }
 
     public void Draw()
     {
-        Main.spriteBatch.draw(texture, Position.x-texture.getWidth()/2, Position.y-texture.getHeight()/2);
-        Main.spriteBatch.draw(Main.NegativeTerminalTexture, negTerminal.x, negTerminal.y);
-        Main.spriteBatch.draw(Main.PositiveTerminalTexture, posTerminal.x, posTerminal.y);
+        //Draws the texture to position of the Bounds
+        Main.spriteBatch.draw(texture, Bounds.x, Bounds.y);
+
+        //Draws the terminals
+        posTerminal.Draw();
+        negTerminal.Draw();
+    }
+
+    //Special position setting function so terminals follow it around
+    public void SetPosition(int x, int y)
+    {
+        Bounds.x = x;
+        Bounds.y = y;
+
+        posTerminal.updatePos();
+        negTerminal.updatePos();
+    }
+
+    //Deletion function makes sure everything gets deleted, wires and all
+    public void Delete()
+    {
+        if (posTerminal.wire!=null)
+            Main.board.wires.remove(posTerminal.wire);
+
+        if (negTerminal.wire!=null)
+            Main.board.wires.remove(negTerminal.wire);
+
+        Main.board.components.remove(this);
     }
 
 }
 
+//Battery subclass of Component
 class Battery extends Component
 {
+    //totally useful Power field...
     public int Power = 100;
 
+    //constructor inherits from parent, but sets texture
     public Battery(Vector2 pos)
     {
         super(pos);
         texture = Main.batteryTexture;
     }
-
-
 }
 
+//Light subclass of Component
 class Light extends Component
 {
-    public int Power = 100;
-
+    //constructor inherits from parent, but sets texture
     public Light(Vector2 pos)
     {
         super(pos);

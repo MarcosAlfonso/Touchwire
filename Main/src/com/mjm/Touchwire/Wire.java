@@ -1,5 +1,6 @@
 package com.mjm.Touchwire;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -15,20 +16,24 @@ import java.util.Vector;
  */
 public class Wire
 {
-    Vector2 startPos;
-    Vector2 endPos;
+    //The two terminals that the wire connect
+    Terminal posTerminal;
+    Terminal negTerminal;
 
-    public Wire(Vector2 sPos, Vector2 ePos)
+    //Constructor needs 2 terminals
+    public Wire(Terminal posTerm, Terminal negTerm)
     {
-        startPos = sPos;
-        endPos = ePos;
+        posTerminal = posTerm;
+        negTerminal = negTerm;
     }
 
+    //Nasty drawing using the shapeRenderer... gross
     public void Draw()
     {
         Main.shapeRender.begin(ShapeRenderer.ShapeType.Line);
         Main.shapeRender.setColor(Color.RED);
-        Main.shapeRender.line(startPos.x,startPos.y,endPos.x,endPos.y);
+        Gdx.gl.glLineWidth(10);
+        Main.shapeRender.line(posTerminal.Bounds.x*2,posTerminal.Bounds.y*2,negTerminal.Bounds.x*2,negTerminal.Bounds.y*2);
         Main.shapeRender.end();
     }
 }
