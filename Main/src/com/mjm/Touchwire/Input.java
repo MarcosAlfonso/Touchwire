@@ -39,11 +39,11 @@ public class Input implements InputProcessor
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
         //Flips y because you have to okay?
-        int flippedY = Main.ScreenY-screenY/2;
+        int flippedY = Main.ScreenY-screenY;
 
         //Hacky shit to make resolution work on both desktop and tablet
         int halfX = screenX/2;
-        int halfY = flippedY-16;
+        int halfY = flippedY/2-16;
 
         //Iterates through Buttons, checks if any are touched and does the shit based off that
         for (Button guiButton : Main.gui.Buttons)
@@ -147,7 +147,7 @@ public class Input implements InputProcessor
         //If a component was picked during touchDown, drag that puppy
         if (dragComponent != null)
         {
-            dragComponent.SetPosition(halfX-64,halfY-64);
+            dragComponent.SetPosition(halfX-64,halfY-64);//fix off set here
 
             if (dragComponent.Bounds.overlaps(Main.gui.ClearButton.Bounds))
                 dragComponent.Delete();

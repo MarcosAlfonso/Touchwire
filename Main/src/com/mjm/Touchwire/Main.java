@@ -107,6 +107,7 @@ public class Main implements ApplicationListener
         gui.Draw();
         spriteBatch.end();
 
+
         //Fucking shape render lines mess everything up, but them in their own batch for now
         spriteBatch.begin();
         for(Wire wire : board.wires)
