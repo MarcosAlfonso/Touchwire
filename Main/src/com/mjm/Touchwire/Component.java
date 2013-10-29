@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import javax.xml.bind.util.ValidationEventCollector;
+import java.util.ArrayList;
+import java.util.List;
 
 //The component class is the overarching class of objects to be placed on the board to be wired up
 public class Component
@@ -64,8 +66,7 @@ public class Component
 //Battery subclass of Component
 class Battery extends Component
 {
-    //totally useful Power field...
-    public int Power = 100;
+    public static List<Component> connectedComponents = new ArrayList<Component>(); //list of components connected to this battery
 
     //constructor inherits from parent, but sets texture
     public Battery(Vector2 pos)
