@@ -33,7 +33,7 @@ public class Wire
         Main.shapeRender.begin(ShapeRenderer.ShapeType.Line);
         Main.shapeRender.setColor(Color.RED);
         Gdx.gl.glLineWidth(10);
-        Main.shapeRender.line(posTerminal.Bounds.x*2,posTerminal.Bounds.y*2,negTerminal.Bounds.x*2,negTerminal.Bounds.y*2);
+        Main.shapeRender.line(posTerminal.Bounds.x,posTerminal.Bounds.y,negTerminal.Bounds.x,negTerminal.Bounds.y);
         Main.shapeRender.end();
     }
 }

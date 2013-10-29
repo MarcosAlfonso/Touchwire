@@ -4,17 +4,10 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-/**
- * Created with IntelliJ IDEA.
- * User: Marcos
- * Date: 10/18/13
- * Time: 12:15 AM
- * To change this template use File | Settings | File Templates.
- */
 public class Input implements InputProcessor
 {
 
-    private Terminal lastPosTerminal = null;
+    private Component compPosTerminal = null;
     private Component dragComponent = null;
 
     @Override
@@ -42,8 +35,8 @@ public class Input implements InputProcessor
         int flippedY = Main.ScreenY-screenY;
 
         //Hacky shit to make resolution work on both desktop and tablet
-        int halfX = screenX/2;
-        int halfY = flippedY/2-16;
+        int halfX = screenX;
+        int halfY = flippedY;
 
         //Iterates through Buttons, checks if any are touched and does the shit based off that
         for (Button guiButton : Main.gui.Buttons)
@@ -68,7 +61,7 @@ public class Input implements InputProcessor
                 {
                     Main.board.components.clear();
                     Main.board.wires.clear();
-                    lastPosTerminal = null;
+                    compPosTerminal = null;
                     Main.debugTimed.addDebug("Board Cleared", 3);
                 }
                 return true;
@@ -89,10 +82,10 @@ public class Input implements InputProcessor
             else if (comp.posTerminal.Bounds.contains(halfX, halfY))
             {
                 //If no positive terminal has been picked yet for wiring, save it
-                if (lastPosTerminal == null)
+                if (compPosTerminal == null)
                 {
                     Main.debugTimed.addDebug("Now select a negative terminal", 3);
-                    lastPosTerminal = comp.posTerminal;
+                    compPosTerminal = comp;
                 }
                 //If they select a positive terminal after already picking one, ERROR
                 else
@@ -105,7 +98,7 @@ public class Input implements InputProcessor
             else if (comp.negTerminal.Bounds.contains(halfX, halfY))
             {
                 //If no positive terminal has been picked yet, ERROR
-                if (lastPosTerminal == null)
+                if (compPosTerminal == null)
                 {
                     Main.debugTimed.addDebug("ERROR: Please start with a positive terminal", 3);
                 }
@@ -113,12 +106,12 @@ public class Input implements InputProcessor
                 else
                 {
                     Main.debugTimed.addDebug("Wire created",3);
-                    Wire newWire = new Wire(lastPosTerminal,comp.negTerminal);
-                    lastPosTerminal.wire = newWire;
+                    Wire newWire = new Wire(compPosTerminal.posTerminal,comp.negTerminal);
+                    compPosTerminal.posTerminal.wire = newWire;
                     comp.negTerminal.wire = newWire;
                     Main.board.wires.add(newWire);
 
-                    lastPosTerminal = null;
+                    compPosTerminal = null;
                 }
                 return true;
             }
@@ -139,15 +132,15 @@ public class Input implements InputProcessor
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
         //Flips y because you have to okay?
-        int flippedY = Main.ScreenY-screenY/2;
+        int flippedY = Main.ScreenY-screenY;
 
-        int halfX = screenX/2;
-        int halfY = flippedY-16;
+        int halfX = screenX;
+        int halfY = flippedY;
 
         //If a component was picked during touchDown, drag that puppy
         if (dragComponent != null)
         {
-            dragComponent.SetPosition(halfX-64,halfY-64);//fix off set here
+            dragComponent.SetPosition(halfX,halfY);
 
             if (dragComponent.Bounds.overlaps(Main.gui.ClearButton.Bounds))
                 dragComponent.Delete();
