@@ -7,9 +7,9 @@ import java.util.List;
 
 public class DebugDisplay
 {
-    static List<String> strings	= new ArrayList<String>();
-    int					x;
-    int					y;
+    List<String> strings	= new ArrayList<String>();
+    public int					x;
+    public int					y;
 
     public DebugDisplay(int xpos, int ypos)
     {

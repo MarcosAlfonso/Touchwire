@@ -17,6 +17,7 @@ public class Board
         //iterates through all components and draws them
         for(Component comp : components)
         {
+            comp.Update();
             comp.Draw();
         }
     }

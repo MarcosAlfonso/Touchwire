@@ -30,7 +30,8 @@ public class Main implements ApplicationListener
     public static Texture batteryTexture;
     public static Texture batteryButtonTexture;
     public static Texture defaultTexture;
-    public static Texture lightTexture;
+    public static Texture lightTextureOff;
+    public static Texture lightTextureOn;
     public static Texture lightButtonTexture;
     public static Texture NegativeTerminalTexture;
     public static Texture PositiveTerminalTexture;
@@ -59,7 +60,8 @@ public class Main implements ApplicationListener
         batteryTexture = new Texture(Gdx.files.internal("BatteryPack.png"));
         batteryButtonTexture = new Texture(Gdx.files.internal("BatteryButton.png"));
         defaultTexture = new Texture(Gdx.files.internal("defaultTexture.png"));
-        lightTexture = new Texture(Gdx.files.internal("DigitalLight.png"));
+        lightTextureOff = new Texture(Gdx.files.internal("DigitalLightOff.png"));
+        lightTextureOn = new Texture(Gdx.files.internal("DigitalLightOn.png"));
         lightButtonTexture = new Texture(Gdx.files.internal("LightButton.png"));
         NegativeTerminalTexture = new Texture(Gdx.files.internal("NegativeTerminal.png"));
         PositiveTerminalTexture = new Texture(Gdx.files.internal("PositiveTerminal.png"));

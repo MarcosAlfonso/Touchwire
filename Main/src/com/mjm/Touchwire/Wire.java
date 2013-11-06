@@ -36,4 +36,13 @@ public class Wire
         Main.shapeRender.line(posTerminal.Bounds.x,posTerminal.Bounds.y,negTerminal.Bounds.x,negTerminal.Bounds.y);
         Main.shapeRender.end();
     }
+
+    public void Delete()
+    {
+        //Makes sure components know that this wire is gone, no longer connected
+        posTerminal.Component.posTerminal.wire = null;
+        negTerminal.Component.negTerminal.wire = null;
+
+        Main.board.wires.remove(this);
+    }
 }
