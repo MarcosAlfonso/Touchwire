@@ -112,9 +112,14 @@ public class Main implements ApplicationListener
 
         //Fucking shape render lines mess everything up, but them in their own batch for now
         spriteBatch.begin();
-        for(Wire wire : board.wires)
+
+        for(Component comp : board.components)
         {
-            wire.Draw();
+            if (comp.negTerminal.wire != null)
+                comp.negTerminal.wire.Draw();
+
+            if (comp.posTerminal.wire != null)
+                comp.posTerminal.wire.Draw();
         }
         spriteBatch.end();
 

@@ -7,14 +7,14 @@ import com.badlogic.gdx.math.Vector2;
 public class Input implements InputProcessor
 {
 
-    private Component compPosTerminal = null;
-    private Component dragComponent = null;
+    private Terminal lastTerminal;
+    private Component dragComponent;
 
     @Override
     public boolean keyDown(int keycode)
-    {
-            return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
+{
+    return false;  //To change body of implemented methods use File | Settings | File Templates.
+}
 
     @Override
     public boolean keyUp(int keycode)
@@ -60,8 +60,7 @@ public class Input implements InputProcessor
                 else if (guiButton.Function.equals("Clear"))
                 {
                     Main.board.components.clear();
-                    Main.board.wires.clear();
-                    compPosTerminal = null;
+                    lastTerminal = null;
                     Main.debugTimed.addDebug("Board Cleared", 3);
                 }
                 return true;
@@ -78,14 +77,14 @@ public class Input implements InputProcessor
                 return true;
             }
 
-            //If they touch a positive terminal
-            else if (comp.posTerminal.Bounds.contains(halfX, halfY))
+            //If they touch a terminal
+            else if (comp.posTerminal.Bounds.contains(halfX, halfY) || comp.negTerminal.Bounds.contains(halfX, halfY))
             {
-                //If no positive terminal has been picked yet for wiring, save it
-                if (compPosTerminal == null)
+                //If no terminal selected yet
+                if (lastTerminal == null)
                 {
                     Main.debugTimed.addDebug("Now select a negative terminal", 3);
-                    compPosTerminal = comp;
+                    //lastTerminal = comp;
                 }
                 //If they select a positive terminal after already picking one, ERROR
                 else
@@ -98,7 +97,7 @@ public class Input implements InputProcessor
             else if (comp.negTerminal.Bounds.contains(halfX, halfY))
             {
                 //If no positive terminal has been picked yet, ERROR
-                if (compPosTerminal == null)
+                if (lastTerminal == null)
                 {
                     Main.debugTimed.addDebug("ERROR: Please start with a positive terminal", 3);
                 }
@@ -106,12 +105,11 @@ public class Input implements InputProcessor
                 else
                 {
                     Main.debugTimed.addDebug("Wire created",3);
-                    Wire newWire = new Wire(compPosTerminal.posTerminal,comp.negTerminal);
-                    compPosTerminal.posTerminal.wire = newWire;
-                    comp.negTerminal.wire = newWire;
-                    Main.board.wires.add(newWire);
+                    //Wire newWire = new Wire(lastTerminal.posTerminal,comp.negTerminal);
+                    //lastTerminal.posTerminal.wire = newWire;
+                    //comp.negTerminal.wire = newWire;
 
-                    compPosTerminal = null;
+                    lastTerminal = null;
                 }
                 return true;
             }

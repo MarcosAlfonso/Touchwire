@@ -42,7 +42,5 @@ public class Wire
         //Makes sure components know that this wire is gone, no longer connected
         posTerminal.Component.posTerminal.wire = null;
         negTerminal.Component.negTerminal.wire = null;
-
-        Main.board.wires.remove(this);
     }
 }

@@ -1,6 +1,7 @@
 package com.mjm.Touchwire;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 
 //Terminal can be positive or negative, for connecting components with wires
 public class Terminal

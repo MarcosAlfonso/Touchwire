@@ -19,6 +19,7 @@ public class Component
     public Terminal posTerminal;
     public Terminal negTerminal;
 
+
     public DebugDisplay Debug;
 
     public boolean isPowered;
