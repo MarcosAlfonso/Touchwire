@@ -1,8 +1,8 @@
 package com.mjm.Touchwire;
 
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import javafx.scene.input.TouchPoint;
 
 public class Input implements InputProcessor
 {
@@ -74,6 +74,13 @@ public class Input implements InputProcessor
             if (comp.Bounds.contains(halfX,halfY))
             {
                 dragComponent = comp;
+
+                //Tangible Detection Stuff
+                if(comp instanceof Zone)
+                {
+                    ((Zone) comp).touchDownDetected(pointer);
+                }
+
                 return true;
             }
 
@@ -113,6 +120,7 @@ public class Input implements InputProcessor
                 }
                 return true;
             }
+
         }
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -120,6 +128,26 @@ public class Input implements InputProcessor
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
+
+        //Flips y because you have to okay?
+        int flippedY = Main.ScreenY-screenY;
+
+        //Hacky shit to make resolution work on both desktop and tablet
+        int halfX = screenX;
+        int halfY = flippedY;
+
+        for(Component comp : Main.board.components){
+            if (comp.Bounds.contains(halfX,halfY))
+            {
+                //Tangible Detection Stuff
+                if(comp instanceof Zone)
+                {
+                    ((Zone) comp).touchUpDetected(pointer);
+                }
+
+                return true;
+            }
+        }
         //lift up stops dragging
         dragComponent = null;
 

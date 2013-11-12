@@ -39,6 +39,11 @@ public class Main implements ApplicationListener
     public static Texture clearButtonTexture;
     public static BitmapFont font;
 
+    //adding the tangible zone textures
+    public static Texture tangibleZone;
+    public static Texture tangibleLightOff;
+    public static Texture tangibleLightOn;
+
     //GUI and Debug
     public static GUI gui = new GUI();
     public static DebugDisplay debugText;
@@ -68,6 +73,11 @@ public class Main implements ApplicationListener
         clearButtonTexture = new Texture(Gdx.files.internal("clearButton.png"));
         blank = new Texture(Gdx.files.internal("blank.png"));
         font = new BitmapFont(Gdx.files.internal("Helv25.fnt"), false);
+
+        //Adding some temp Tangible Textures here
+        tangibleZone = new Texture(Gdx.files.internal("TangibleZone.png"));
+        tangibleLightOff = new Texture(Gdx.files.internal("TangibleLightOff.png"));
+        tangibleLightOn = new Texture(Gdx.files.internal("TangibleLightOn.png"));
 
         //Sets up custom input processing
         Gdx.input.setInputProcessor(input);

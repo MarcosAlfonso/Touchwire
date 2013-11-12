@@ -175,3 +175,66 @@ class Light extends Component
 
 
 }
+
+class Zone extends Component
+{
+    /* Basically an Enum
+     *  0 == No tangible detected
+     *  1 == Light tangible detected
+     *  2 == Switch tangible detected
+     */
+    private int tangibleType;
+    //Stores the point to a touch
+    private List<Integer> touches;
+
+    private void detectTangibleType()
+    {
+        if(touches.isEmpty())
+            tangibleType = 0;
+        else
+            tangibleType = 1;
+    }
+
+    public Zone(Vector2 pos)
+    {
+        super(pos);
+        tangibleType = 0;
+        //stores the pointer to a touch
+        touches = new ArrayList<Integer>();
+    }
+
+    @Override
+    public void Update()
+    {
+        super.Update();
+        detectTangibleType();
+        switch(tangibleType){
+            case 0:
+                    texture = Main.tangibleZone;
+                    break;
+            case 1:
+                    if(isPowered)
+                        texture = Main.tangibleLightOn;
+                    else
+                        texture = Main.tangibleLightOff;
+                    break;
+            case 2:
+                    break;
+            default:
+                    //error statment should go here;
+                    break;
+
+        }
+
+    }
+
+    public void touchDownDetected(int touchPointer)
+    {
+        touches.add(touchPointer);
+    }
+
+    public void touchUpDetected(int touchPointer)
+    {
+        touches.remove(touchPointer);
+    }
+}
