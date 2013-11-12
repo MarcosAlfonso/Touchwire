@@ -17,6 +17,9 @@ import com.mjm.Touchwire.Utililities.DebugDisplayTimed;
 
 public class Main implements ApplicationListener
 {
+    //PC = 1 : Android = 2
+    public static int PCvsAndroid = 2;
+
     //Screen resolution
     public static final int ScreenX = 1280;
     public static final int ScreenY = 800;
