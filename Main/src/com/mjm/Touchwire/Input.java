@@ -7,8 +7,8 @@ import javafx.scene.input.TouchPoint;
 public class Input implements InputProcessor
 {
 
-    private Terminal lastTerminal;
-    private Component dragComponent;
+    private Terminal lastTerminal = null;
+    private Component dragComponent = null;
 
     @Override
     public boolean keyDown(int keycode)
@@ -63,6 +63,13 @@ public class Input implements InputProcessor
                     lastTerminal = null;
                     Main.debugTimed.addDebug("Board Cleared", 3);
                 }
+                else if (guiButton.Function.equals("Tangible"))
+                {
+                    Main.debugTimed.addDebug("Tangible Zone Spawned", 1);
+                    Component newComp = new Zone(new Vector2(halfX, halfY));
+                    Main.board.components.add(newComp);
+                    dragComponent = newComp;
+                }
                 return true;
             }
         }
@@ -84,43 +91,54 @@ public class Input implements InputProcessor
                 return true;
             }
 
-            //If they touch a terminal
-            else if (comp.posTerminal.Bounds.contains(halfX, halfY) || comp.negTerminal.Bounds.contains(halfX, halfY))
+            //If they touch a positive terminal
+            else if (comp.posTerminal.Bounds.contains(halfX, halfY))
             {
                 //If no terminal selected yet
                 if (lastTerminal == null)
                 {
-                    Main.debugTimed.addDebug("Now select a negative terminal", 3);
-                    //lastTerminal = comp;
+                    Main.debugTimed.addDebug("Now select a negative terminal", 5);
+                    lastTerminal = comp.posTerminal;
                 }
-                //If they select a positive terminal after already picking one, ERROR
-                else
+                //If they select a positive terminal after starting with positive, error
+                else if (lastTerminal.isPositive)
                 {
-                    Main.debugTimed.addDebug("ERROR: Positive terminal chosen",3);
+                    Main.debugTimed.addDebug("ERROR: Please select a negative terminal",3);
+                }
+                else if (!lastTerminal.isPositive && comp != lastTerminal.Component)
+                {
+                    Main.debugTimed.addDebug("DEBUG: Wire Created",3);
+                    Wire newWire = new Wire(lastTerminal,comp.posTerminal);
+                    lastTerminal.wire = newWire;
+                    comp.posTerminal.wire = newWire;
+                    lastTerminal = null;
                 }
                 return true;
             }
             //If they touch a negative terminal
             else if (comp.negTerminal.Bounds.contains(halfX, halfY))
             {
-                //If no positive terminal has been picked yet, ERROR
+                //If no terminal selected yet
                 if (lastTerminal == null)
                 {
-                    Main.debugTimed.addDebug("ERROR: Please start with a positive terminal", 3);
+                    Main.debugTimed.addDebug("Now select a positive terminal", 5);
+                    lastTerminal = comp.negTerminal;
                 }
-                //If positive terminal has been picked, create wire between it and this negative terminal
-                else
+                //If they select a positive terminal after starting with positive, error
+                else if (!lastTerminal.isPositive)
                 {
-                    Main.debugTimed.addDebug("Wire created",3);
-                    //Wire newWire = new Wire(lastTerminal.posTerminal,comp.negTerminal);
-                    //lastTerminal.posTerminal.wire = newWire;
-                    //comp.negTerminal.wire = newWire;
-
+                    Main.debugTimed.addDebug("ERROR: Please select a positive terminal",3);
+                }
+                else if (lastTerminal.isPositive && comp != lastTerminal.Component)
+                {
+                    Main.debugTimed.addDebug("DEBUG: Wire Created",3);
+                    Wire newWire = new Wire(lastTerminal,comp.negTerminal);
+                    lastTerminal.wire = newWire;
+                    comp.negTerminal.wire = newWire;
                     lastTerminal = null;
                 }
                 return true;
             }
-
         }
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
@@ -140,7 +158,7 @@ public class Input implements InputProcessor
             if (comp.Bounds.contains(halfX,halfY))
             {
                 //Tangible Detection Stuff
-                if(comp instanceof Zone)
+                if(comp instanceof Zone && ((Zone) comp).touches.size()>0)
                 {
                     ((Zone) comp).touchUpDetected(pointer);
                 }

@@ -43,6 +43,7 @@ public class Main implements ApplicationListener
     public static Texture tangibleZone;
     public static Texture tangibleLightOff;
     public static Texture tangibleLightOn;
+    public static Texture tangibleZoneButton;
 
     //GUI and Debug
     public static GUI gui = new GUI();
@@ -78,6 +79,7 @@ public class Main implements ApplicationListener
         tangibleZone = new Texture(Gdx.files.internal("TangibleZone.png"));
         tangibleLightOff = new Texture(Gdx.files.internal("TangibleLightOff.png"));
         tangibleLightOn = new Texture(Gdx.files.internal("TangibleLightOn.png"));
+        tangibleZoneButton = new Texture(Gdx.files.internal("TangibleZoneButton.png"));
 
         //Sets up custom input processing
         Gdx.input.setInputProcessor(input);

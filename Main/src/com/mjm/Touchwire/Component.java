@@ -25,8 +25,9 @@ public class Component
     public boolean isPowered;
 
     //Constructor, needs a position as an argument
-    public Component(Vector2 pos)
+    public Component(Vector2 pos, Texture image)
     {
+        texture = image;
         //Sets bounds rectangle position to the position provided, centered based of texture size, size is set to texture
         Bounds = new Rectangle(pos.x-texture.getWidth()/2,pos.y-texture.getWidth()/2,texture.getWidth(),texture.getHeight());
 
@@ -59,13 +60,13 @@ public class Component
     //Special position setting function so terminals follow it around
     public void SetPosition(int x, int y)
     {
-        Bounds.x = x;
-        Bounds.y = y;
+        Bounds.x = x-Bounds.width/2;
+        Bounds.y = y-Bounds.height/2;
 
         posTerminal.updatePos();
         negTerminal.updatePos();
-        Debug.x = x;
-        Debug.y = y;
+        Debug.x = (int)(x-Bounds.width/2);
+        Debug.y = (int)(y-Bounds.height/2);
 
     }
 
@@ -98,8 +99,7 @@ class Battery extends Component
     //constructor inherits from parent, but sets texture
     public Battery(Vector2 pos)
     {
-        super(pos);
-        texture = Main.batteryTexture;
+        super(pos,Main.batteryTexture);
     }
 
     @Override
@@ -157,7 +157,7 @@ class Light extends Component
     //constructor inherits from parent, but sets texture
     public Light(Vector2 pos)
     {
-        super(pos);
+        super(pos,Main.lightTextureOff);
     }
 
 
@@ -178,27 +178,33 @@ class Light extends Component
 
 class Zone extends Component
 {
+    public enum TangibleTypes{
+        NoTangible,
+        LightTangible,
+        SwitchTangible
+    }
+
     /* Basically an Enum
      *  0 == No tangible detected
      *  1 == Light tangible detected
      *  2 == Switch tangible detected
      */
-    private int tangibleType;
+    private TangibleTypes tangibleType;
     //Stores the point to a touch
-    private List<Integer> touches;
+    public List<Integer> touches;
 
     private void detectTangibleType()
     {
         if(touches.isEmpty())
-            tangibleType = 0;
+            tangibleType = TangibleTypes.NoTangible;
         else
-            tangibleType = 1;
+            tangibleType = TangibleTypes.LightTangible;
     }
 
     public Zone(Vector2 pos)
     {
-        super(pos);
-        tangibleType = 0;
+        super(pos,Main.tangibleZone);
+        tangibleType = TangibleTypes.NoTangible;
         //stores the pointer to a touch
         touches = new ArrayList<Integer>();
     }
@@ -209,16 +215,16 @@ class Zone extends Component
         super.Update();
         detectTangibleType();
         switch(tangibleType){
-            case 0:
+            case NoTangible:
                     texture = Main.tangibleZone;
                     break;
-            case 1:
+            case LightTangible:
                     if(isPowered)
                         texture = Main.tangibleLightOn;
                     else
                         texture = Main.tangibleLightOff;
                     break;
-            case 2:
+            case SwitchTangible:
                     break;
             default:
                     //error statment should go here;

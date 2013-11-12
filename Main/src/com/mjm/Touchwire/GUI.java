@@ -21,6 +21,7 @@ public class GUI
     public Button BatteryButton;
     public Button LightButton;
     public Button ClearButton;
+    public Button TangibleButton;
 
     //Constructor sets up buttons
     public GUI()
@@ -28,10 +29,12 @@ public class GUI
         BatteryButton = new Button( new Rectangle(0,0,96,96), "Battery");
         LightButton = new Button( new Rectangle(128,0,96,96), "Light");
         ClearButton = new Button( new Rectangle(1280-96,0,96,96), "Clear");
+        TangibleButton = new Button( new Rectangle(256,0,96,96), "Tangible");
 
         Buttons.add(BatteryButton);
         Buttons.add(LightButton);
         Buttons.add(ClearButton);
+        Buttons.add(TangibleButton);
     }
 
     //Draws all them buttons
@@ -40,6 +43,7 @@ public class GUI
         Main.spriteBatch.draw(Main.batteryButtonTexture, BatteryButton.Bounds.x, BatteryButton.Bounds.y);
         Main.spriteBatch.draw(Main.lightButtonTexture, LightButton.Bounds.x, LightButton.Bounds.y);
         Main.spriteBatch.draw(Main.clearButtonTexture, ClearButton.Bounds.x, ClearButton.Bounds.y);
+        Main.spriteBatch.draw(Main.tangibleZoneButton, TangibleButton.Bounds.x, TangibleButton.Bounds.y);
 
     }
 }
