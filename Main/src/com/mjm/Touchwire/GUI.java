@@ -14,49 +14,28 @@ import java.util.List;
  */
 public class GUI
 {
-    //button list, can probably be removed though not really necessary
-    public static List<Button> Buttons = new ArrayList<Button>();
-
     //Buttons
-    public Button BatteryButton;
-    public Button LightButton;
-    public Button ClearButton;
-    public Button TangibleButton;
+    public static Rectangle BatteryButton;
+    public static Rectangle LightButton;
+    public static Rectangle ClearButton;
+    public static Rectangle TangibleButton;
 
     //Constructor sets up buttons
     public GUI()
     {
-        BatteryButton = new Button( new Rectangle(0,0,96,96), "Battery");
-        LightButton = new Button( new Rectangle(128,0,96,96), "Light");
-        ClearButton = new Button( new Rectangle(1280-96,0,96,96), "Clear");
-        TangibleButton = new Button( new Rectangle(256,0,96,96), "Tangible");
+        BatteryButton = new Rectangle(0,0,96,96);
+        LightButton = new Rectangle(128,0,96,96);
+        ClearButton = new Rectangle(1280-96,0,96,96);
+        TangibleButton = new Rectangle(256,0,96,96);
 
-        Buttons.add(BatteryButton);
-        Buttons.add(LightButton);
-        Buttons.add(ClearButton);
-        Buttons.add(TangibleButton);
     }
 
     //Draws all them buttons
     public void Draw()
     {
-        Main.spriteBatch.draw(Main.batteryButtonTexture, BatteryButton.Bounds.x, BatteryButton.Bounds.y);
-        Main.spriteBatch.draw(Main.lightButtonTexture, LightButton.Bounds.x, LightButton.Bounds.y);
-        Main.spriteBatch.draw(Main.clearButtonTexture, ClearButton.Bounds.x, ClearButton.Bounds.y);
-        Main.spriteBatch.draw(Main.tangibleZoneButton, TangibleButton.Bounds.x, TangibleButton.Bounds.y);
-
-    }
-}
-
-//Potentially superfluous class, needs to be looked at
-class Button
-{
-    Rectangle Bounds;
-    String Function;
-
-    Button( Rectangle rect, String func)
-    {
-        Bounds = rect;
-        Function = func;
+        Main.spriteBatch.draw(Main.batteryButtonTexture, BatteryButton.x, BatteryButton.y);
+        Main.spriteBatch.draw(Main.lightButtonTexture, LightButton.x, LightButton.y);
+        Main.spriteBatch.draw(Main.clearButtonTexture, ClearButton.x, ClearButton.y);
+        Main.spriteBatch.draw(Main.tangibleZoneButton, TangibleButton.x, TangibleButton.y);
     }
 }

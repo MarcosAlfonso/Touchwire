@@ -1,5 +1,6 @@
 package com.mjm.Touchwire;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -19,6 +20,7 @@ public class Component
     public Terminal posTerminal;
     public Terminal negTerminal;
 
+    public List<Integer> touchList = new ArrayList<Integer>();
 
     public DebugDisplay Debug;
 
@@ -33,7 +35,7 @@ public class Component
 
         Debug = new DebugDisplay((int)pos.x,(int)pos.y);
 
-        //setups up the terminals
+        //sets up the terminals
         posTerminal = new Terminal(this, true);
         negTerminal = new Terminal(this, false);
     }
@@ -41,9 +43,12 @@ public class Component
     public void Update()
     {
         //Debugs
-        Debug.addDebug("isPowered: " + isPowered);
-    }
+        Debug.addDebug("TouchList: " + touchList.toString());
+        processTouch();
 
+        if (Bounds.overlaps(GUI.ClearButton))
+            Delete();
+    }
 
     public void Draw()
     {
@@ -83,6 +88,35 @@ public class Component
         Main.board.components.remove(this);
     }
 
+    public void processTouch()
+    {
+        List<Integer> removeList = new ArrayList<Integer>();
+
+        for(int i : touchList)
+        {
+            int screenX = Gdx.input.getX(i);
+            int screenY = Gdx.input.getY(i);
+
+            //Flips y because you have to okay?
+            int flippedY = Main.ScreenY - screenY / Main.PCvsAndroid;
+
+            //Hacky shit to make resolution work on both desktop and tablet
+            int halfX = screenX / Main.PCvsAndroid;
+            int halfY = flippedY;
+
+            if (!Gdx.input.isTouched(i) || !Bounds.contains(halfX,halfY))
+                removeList.add(i);
+
+            if (touchList.get(0) != null)
+                SetPosition(halfX,halfY);
+
+        }
+
+
+
+        touchList.removeAll(removeList);
+    }
+
 }
 
 //Battery subclass of Component
@@ -109,10 +143,6 @@ class Battery extends Component
 
         //Batteries always gots the power!
         isPowered = true;
-
-        //Debug Stuff
-        Debug.addDebug("Circuit Closed: " + isCircuitClosed);
-        Debug.addDebug("# Connected: " + ComponentsInSeries.size());
 
         //Resets circuit so we never get old circuits surviving
         isCircuitClosed = false;
@@ -191,11 +221,10 @@ class Zone extends Component
      */
     private TangibleTypes tangibleType;
     //Stores the point to a touch
-    public List<Integer> touches;
 
     private void detectTangibleType()
     {
-        if(touches.isEmpty())
+        if(touchList.isEmpty())
             tangibleType = TangibleTypes.NoTangible;
         else
             tangibleType = TangibleTypes.LightTangible;
@@ -206,7 +235,7 @@ class Zone extends Component
         super(pos,Main.tangibleZone);
         tangibleType = TangibleTypes.NoTangible;
         //stores the pointer to a touch
-        touches = new ArrayList<Integer>();
+        touchList = new ArrayList<Integer>();
     }
 
     @Override
@@ -236,11 +265,11 @@ class Zone extends Component
 
     public void touchDownDetected(int touchPointer)
     {
-        touches.add(touchPointer);
+        touchList.add(touchPointer);
     }
 
     public void touchUpDetected(int touchPointer)
     {
-        touches.remove(touchPointer);
+        touchList.remove(touchPointer);
     }
 }

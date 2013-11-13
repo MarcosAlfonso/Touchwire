@@ -17,17 +17,11 @@ public class Board
         Main.debugText.addDebug("Number of Components: " + components.size());
         Main.debugText.addDebug("Last Terminal: " + Main.input);
 
-    for(int i = 0; i < 10; i++)
-    {
-        if (Gdx.input.isTouched(i))
-            Main.debugText.addDebug("Input " + i + ": {" + Gdx.input.getX(i) + ", " + Gdx.input.getY(i) + "}");
-    }
-
         //iterates through all components and draws them
         for(Component comp : components)
         {
-            comp.Update();
             comp.Draw();
+            comp.Update();
         }
     }
 }

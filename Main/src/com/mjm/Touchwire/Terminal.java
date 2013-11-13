@@ -19,9 +19,9 @@ public class Terminal
 
         //Different positions based off polarity
         if (isPositive)
-            Bounds = new Rectangle(Component.Bounds.x+128,Component.Bounds.y+80,48,48);
+            Bounds = new Rectangle(Component.Bounds.x+128,Component.Bounds.y+64,64,64);
         else
-            Bounds = new Rectangle(Component.Bounds.x+128,Component.Bounds.y,48,48);
+            Bounds = new Rectangle(Component.Bounds.x+128,Component.Bounds.y,64,64);
     }
 
     //Keeps terminals snapped to parent component
@@ -30,7 +30,7 @@ public class Terminal
         Bounds.x =  Component.Bounds.x+128;
 
         if (isPositive)
-            Bounds.y = Component.Bounds.y+80;
+            Bounds.y = Component.Bounds.y+64;
         else
             Bounds.y = Component.Bounds.y;
     }
