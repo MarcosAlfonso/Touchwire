@@ -23,6 +23,12 @@ public class Wire
     //Constructor needs 2 terminals
     public Wire(Terminal posTerm, Terminal negTerm)
     {
+        if (posTerm.wire != null)
+            posTerm.wire.Delete();
+
+        if (negTerm.wire != null)
+            negTerm.wire.Delete();
+
         posTerminal = posTerm;
         negTerminal = negTerm;
     }
@@ -33,7 +39,7 @@ public class Wire
         Main.shapeRender.begin(ShapeRenderer.ShapeType.Line);
         Main.shapeRender.setColor(Color.RED);
         Gdx.gl.glLineWidth(10);
-        Main.shapeRender.line(posTerminal.Bounds.x*Main.PCvsAndroid,posTerminal.Bounds.y*Main.PCvsAndroid,negTerminal.Bounds.x*Main.PCvsAndroid,negTerminal.Bounds.y*Main.PCvsAndroid);
+        Main.shapeRender.line(posTerminal.Bounds.x*Main.PCvsAndroid+posTerminal.Bounds.width/2,posTerminal.Bounds.y*Main.PCvsAndroid+posTerminal.Bounds.height/2,negTerminal.Bounds.x*Main.PCvsAndroid+posTerminal.Bounds.width/2,negTerminal.Bounds.y*Main.PCvsAndroid+posTerminal.Bounds.height/2);
         Main.shapeRender.end();
     }
 

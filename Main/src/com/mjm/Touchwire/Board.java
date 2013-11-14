@@ -1,5 +1,4 @@
 package com.mjm.Touchwire;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +10,7 @@ public class Board
 {
 
     public static List<Component> components = new ArrayList<Component>(); //dynamic list of Component(s)
+    public static List<Component> deleteList = new ArrayList<Component>(); //dynamic list of Component(s)
 
     public void Draw()
     {
@@ -22,6 +22,18 @@ public class Board
         {
             comp.Draw();
             comp.Update();
+        }
+
+        for( Component comp : deleteList)
+        {
+            comp.Delete();
+        }
+
+        deleteList.clear();
+
+        if(Main.input.lastTerminal != null)
+        {
+            Main.spriteBatch.draw(Main.SelectedTerminalTexture, Main.input.lastTerminal.Bounds.x, Main.input.lastTerminal.Bounds.y);
         }
     }
 }

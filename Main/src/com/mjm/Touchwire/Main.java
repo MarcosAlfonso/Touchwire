@@ -27,7 +27,7 @@ public class Main implements ApplicationListener
     //Basic stuff
     public static SpriteBatch spriteBatch;
     public static ShapeRenderer shapeRender;
-    public static InputProcessor input = new Input();
+    public static Input input = new Input();
 
     //Textures
     public static Texture batteryTexture;
@@ -38,6 +38,7 @@ public class Main implements ApplicationListener
     public static Texture lightButtonTexture;
     public static Texture NegativeTerminalTexture;
     public static Texture PositiveTerminalTexture;
+    public static Texture SelectedTerminalTexture;
     public static Texture blank;
     public static Texture clearButtonTexture;
     public static BitmapFont font;
@@ -74,6 +75,7 @@ public class Main implements ApplicationListener
         lightButtonTexture = new Texture(Gdx.files.internal("LightButton.png"));
         NegativeTerminalTexture = new Texture(Gdx.files.internal("NegativeTerminal.png"));
         PositiveTerminalTexture = new Texture(Gdx.files.internal("PositiveTerminal.png"));
+        SelectedTerminalTexture = new Texture(Gdx.files.internal("terminalSelect.png"));
         clearButtonTexture = new Texture(Gdx.files.internal("clearButton.png"));
         blank = new Texture(Gdx.files.internal("blank.png"));
         font = new BitmapFont(Gdx.files.internal("Helv25.fnt"), false);

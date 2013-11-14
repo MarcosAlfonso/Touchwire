@@ -47,7 +47,7 @@ public class Component
         processTouch();
 
         if (Bounds.overlaps(GUI.ClearButton))
-            Delete();
+            Main.board.deleteList.add(this);
     }
 
     public void Draw()
@@ -83,6 +83,9 @@ public class Component
 
         if (negTerminal.wire!=null)
             negTerminal.wire.Delete();
+
+        if (negTerminal == Main.input.lastTerminal || posTerminal == Main.input.lastTerminal)
+            Main.input.lastTerminal = null;
 
 
         Main.board.components.remove(this);
@@ -228,6 +231,28 @@ class Zone extends Component
             tangibleType = TangibleTypes.NoTangible;
         else
             tangibleType = TangibleTypes.LightTangible;
+
+        //Work in Progress below
+        if(touchList.size() < 3)
+            tangibleType = TangibleTypes.NoTangible;
+        else
+        {
+            int value = 0;// Used to find the top-left corner "should" be lowest value
+            int topLeftTouch;
+            for(int i : touchList)
+            {
+                int touchX = Gdx.input.getX(i);
+                int touchY = Gdx.input.getY(i);
+                if(touchX * touchY < value){
+                    value = touchX * touchY;
+                    topLeftTouch = i;
+                }
+            }
+
+
+        }
+
+
     }
 
     public Zone(Vector2 pos)

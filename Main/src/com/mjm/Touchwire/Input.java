@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 public class Input implements InputProcessor
 {
 
-    private static Terminal lastTerminal = null;
+    public static Terminal lastTerminal = null;
 
     @Override
     public boolean keyDown(int keycode)
@@ -60,7 +60,6 @@ public class Input implements InputProcessor
             Main.board.components.add(new Zone(new Vector2(halfX, halfY)));
 
         }
-
 
         //Iterate through all the components on the board, so we can check if anything is getting touched
         for (Component comp : Main.board.components)
@@ -129,6 +128,7 @@ public class Input implements InputProcessor
             }
         }
 
+        lastTerminal = null;
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
