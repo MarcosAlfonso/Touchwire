@@ -20,7 +20,7 @@ import com.mjm.Touchwire.Utililities.GameState;
 public class GameManager implements ApplicationListener
 {
     //PC = 1 : Android = 2
-    public static int PCvsAndroid = 1;
+    public static int PCvsAndroid = 2;
 
     //Screen resolution
     public static final int ScreenX = 1280;

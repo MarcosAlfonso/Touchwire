@@ -14,16 +14,26 @@ public class Zone extends Component
         SwitchTangible
     }
 
-    /* Basically an Enum
-     *  0 == No tangible detected
-     *  1 == Light tangible detected
-     *  2 == Switch tangible detected
-     */
     private TangibleTypes tangibleType;
-    //Stores the point to a touch
+    private int topLeftTouch;
+    private int topRightTouch;
+
+    public Zone(Vector2 pos)
+    {
+        super(pos, GameManager.tangibleZone);
+        tangibleType = TangibleTypes.NoTangible;
+        //stores the pointer to a touch
+        touchList = new ArrayList<Integer>();
+    }
 
     private void detectTangibleType()
     {
+        if (topLeftTouch != -1 && !touchList.contains(topLeftTouch))
+            topLeftTouch = -1;
+
+        if (topRightTouch != -1 && !touchList.contains(topRightTouch))
+            topRightTouch = -1;
+
         if(touchList.isEmpty())
             tangibleType = TangibleTypes.NoTangible;
         else
@@ -32,19 +42,20 @@ public class Zone extends Component
         //Work in Progress below
         if(touchList.size() < 3)
             tangibleType = TangibleTypes.NoTangible;
+
         else
         {
-            float lValue = 0;// Used to find the top-left point "should" be lowest value
+            float lValue = 1000000000;// Used to find the top-left point "should" be lowest value
             float rValue = 0;// Used to find the top-right point "should" be lowest value
             float componentKey = 0;// Used to figure out what component this is dst of all points added together
-            int topLeftTouch = -1;// "should" become pointer to topLeftTouch if stays -1 serious error has occurred
-            int topRightTouch = -1;// "should" become pointer to topRightTouch if stays -1 serious error has occurred
+            topLeftTouch = -1;// "should" become pointer to topLeftTouch if stays -1 serious error has occurred
+            topRightTouch = -1;// "should" become pointer to topRightTouch if stays -1 serious error has occurred
 
             //Loop through all the touches on object to calculate top-left point, top-right point and component key
             for(int i = 0; i < touchList.size(); i++)
             {
                 int currentTouch = touchList.get(i);// Main touch being looked at
-                int nextTouch = touchList.get(i+1 % touchList.size());// Next touch (looped) to be looked at
+                int nextTouch = touchList.get((i+1) % touchList.size());// Next touch (looped) to be looked at
                 Vector2 currentPoint = new Vector2(Gdx.input.getX(currentTouch), Gdx.input.getY(currentTouch));// Vector of current point
                 Vector2 nextPoint = new Vector2(Gdx.input.getX(nextTouch), Gdx.input.getY(nextTouch));// Vector of next point
 
@@ -82,18 +93,14 @@ public class Zone extends Component
 
     }
 
-    public Zone(Vector2 pos)
-    {
-        super(pos, GameManager.tangibleZone);
-        tangibleType = TangibleTypes.NoTangible;
-        //stores the pointer to a touch
-        touchList = new ArrayList<Integer>();
-    }
-
     @Override
     public void Update()
     {
         super.Update();
+
+        Debug.addDebug("Tangible Type: " + tangibleType);
+        Debug.addDebug("Top Left Touch: " + topLeftTouch);
+
         detectTangibleType();
         switch(tangibleType){
             case NoTangible:
@@ -108,20 +115,32 @@ public class Zone extends Component
             case SwitchTangible:
                     break;
             default:
-                    //error statment should go here;
+                    //error statement should go here;
                     break;
 
         }
 
     }
 
-    public void touchDownDetected(int touchPointer)
+    @Override
+    public void UpdatePosition()
     {
-        touchList.add(touchPointer);
-    }
+        if (topLeftTouch != -1)
+        {
+            {
+                int screenX = Gdx.input.getX(topLeftTouch);
+                int screenY = Gdx.input.getY(topLeftTouch);
 
-    public void touchUpDetected(int touchPointer)
-    {
-        touchList.remove(touchPointer);
+                //Flips y because you have to okay?
+                int flippedY = GameManager.ScreenY - screenY / GameManager.PCvsAndroid;
+
+                //Hacky shit to make resolution work on both desktop and tablet
+                int halfX = screenX / GameManager.PCvsAndroid;
+                int halfY = flippedY;
+
+                SetPosition((int)(halfX+Bounds.width/2-10),(int)(halfY-Bounds.height/2+10));
+            }
+        }
+
     }
 }

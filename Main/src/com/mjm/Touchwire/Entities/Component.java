@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.mjm.Touchwire.GameManager;
+import com.mjm.Touchwire.States.SandboxState;
 import com.mjm.Touchwire.Utililities.DebugDisplay;
 import com.mjm.Touchwire.Utililities.GUI;
 
@@ -46,6 +47,13 @@ public class Component
         //Debugs
         Debug.addDebug("TouchList: " + touchList.toString());
         processTouch();
+
+        if (Bounds.overlaps(SandboxState.gui.getButton(SandboxState.Buttons.Clear.name()).Bounds))
+        {
+            Board.deleteList.add(this);
+        }
+
+        UpdatePosition();
     }
 
     public void Draw()
@@ -70,7 +78,23 @@ public class Component
         negTerminal.updatePos();
         Debug.x = (int)(x-Bounds.width/2);
         Debug.y = (int)(y-Bounds.height/2);
+    }
 
+    public void UpdatePosition()
+    {
+        if (touchList.size() > 0)
+        {
+            int screenX = Gdx.input.getX(0);
+            int screenY = Gdx.input.getY(0);
+
+            //Flips y because you have to okay?
+            int flippedY = GameManager.ScreenY - screenY / GameManager.PCvsAndroid;
+
+            //Hacky shit to make resolution work on both desktop and tablet
+            int halfX = screenX / GameManager.PCvsAndroid;
+            int halfY = flippedY;
+            SetPosition(halfX,halfY);
+        }
     }
 
     //Deletion function makes sure everything gets deleted, wires and all
@@ -105,18 +129,14 @@ public class Component
             int halfX = screenX / GameManager.PCvsAndroid;
             int halfY = flippedY;
 
-            if (!Gdx.input.isTouched(i) || !Bounds.contains(halfX,halfY))
+            if (!Gdx.input.isTouched(i))
                 removeList.add(i);
-
-            if (touchList.get(0) != null)
-                SetPosition(halfX,halfY);
-
         }
-
-
 
         touchList.removeAll(removeList);
     }
+
+
 
 }
 

@@ -71,8 +71,6 @@ public class SandboxInput implements InputProcessor
         //Iterate through all the components on the board, so we can check if anything is getting touched
         for (Component comp : GameManager.board.components)
         {
-            if (comp.Bounds.overlaps(SandboxState.gui.getButton(SandboxState.Buttons.Clear.name()).Bounds))
-                GameManager.board.deleteList.add(comp);
 
             //If they touch an existing component, add pointer to component touchList
             if (comp.Bounds.contains(halfX, halfY))
