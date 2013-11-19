@@ -1,6 +1,6 @@
 package com.mjm.Touchwire.Utililities;
 
-import com.mjm.Touchwire.Main;
+import com.mjm.Touchwire.GameManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class DebugDisplay
         for(String s : strings)
         {
             int i = strings.indexOf(s);
-            Main.font.draw(Main.spriteBatch, s, x, (y - (i * 30)));
+            GameManager.font.draw(GameManager.spriteBatch, s, x, (y - (i * 30)));
         }
 
         strings.clear();

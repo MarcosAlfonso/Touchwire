@@ -1,21 +1,23 @@
 package com.mjm.Touchwire;
 
 import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Rectangle;
+import com.mjm.Touchwire.Entities.Board;
+import com.mjm.Touchwire.States.SandboxState;
+import com.mjm.Touchwire.States.MainMenuState;
+import com.mjm.Touchwire.States.SandboxInput;
 import com.mjm.Touchwire.Utililities.DebugDisplay;
 import com.mjm.Touchwire.Utililities.DebugDisplayTimed;
+import com.mjm.Touchwire.Utililities.GameState;
 
-public class Main implements ApplicationListener
+public class GameManager implements ApplicationListener
 {
     //PC = 1 : Android = 2
     public static int PCvsAndroid = 1;
@@ -24,10 +26,22 @@ public class Main implements ApplicationListener
     public static final int ScreenX = 1280;
     public static final int ScreenY = 800;
 
+    //State Stuff
+    public enum GameStates
+    {
+        MainMenu, Sandbox,
+    }
+
+    static GameStates curStateName = GameStates.MainMenu;
+    public static GameState curState;
+
+    public static SandboxState sandboxState = new SandboxState();
+    public static MainMenuState mainMenuState = new MainMenuState();
+
     //Basic stuff
     public static SpriteBatch spriteBatch;
     public static ShapeRenderer shapeRender;
-    public static Input input = new Input();
+    public static SandboxInput input = new SandboxInput();
 
     //Textures
     public static Texture batteryTexture;
@@ -42,19 +56,17 @@ public class Main implements ApplicationListener
     public static Texture blank;
     public static Texture clearButtonTexture;
     public static BitmapFont font;
-
-    //adding the tangible zone textures
+    public static BitmapFont largeFont;
     public static Texture tangibleZone;
     public static Texture tangibleLightOff;
     public static Texture tangibleLightOn;
     public static Texture tangibleZoneButton;
+    public static Texture backButton;
 
-    //GUI and Debug
-    public static GUI gui = new GUI();
     public static DebugDisplay debugText;
     public static DebugDisplayTimed debugTimed;
 
-    private OrthographicCamera cam;
+    public static OrthographicCamera cam;
 
     public static Board board;
 
@@ -79,23 +91,23 @@ public class Main implements ApplicationListener
         clearButtonTexture = new Texture(Gdx.files.internal("clearButton.png"));
         blank = new Texture(Gdx.files.internal("blank.png"));
         font = new BitmapFont(Gdx.files.internal("Helv25.fnt"), false);
-
-        //Adding some temp Tangible Textures here
+        largeFont = new BitmapFont(Gdx.files.internal("Helv65.fnt"), false);
         tangibleZone = new Texture(Gdx.files.internal("TangibleZone.png"));
         tangibleLightOff = new Texture(Gdx.files.internal("TangibleLightOff.png"));
         tangibleLightOn = new Texture(Gdx.files.internal("TangibleLightOn.png"));
         tangibleZoneButton = new Texture(Gdx.files.internal("TangibleZoneButton.png"));
+        backButton = new Texture(Gdx.files.internal("backButton.png"));
 
         //Sets up custom input processing
         Gdx.input.setInputProcessor(input);
 
         //Camera initializing
-        cam = new OrthographicCamera(ScreenX,ScreenY);
+        cam = new OrthographicCamera(ScreenX, ScreenY);
 
         spriteBatch = new SpriteBatch();
         shapeRender = new ShapeRenderer();
 
-        board = new Board();
+        setState(GameStates.MainMenu);
     }
 
     @Override
@@ -113,8 +125,8 @@ public class Main implements ApplicationListener
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         //Sets campera position and updates/applies
-        cam.position.x = ScreenX/2;
-        cam.position.y = ScreenY/2;
+        cam.position.x = ScreenX / 2;
+        cam.position.y = ScreenY / 2;
         cam.update();
         spriteBatch.setProjectionMatrix(cam.combined);
 
@@ -122,25 +134,13 @@ public class Main implements ApplicationListener
         spriteBatch.begin();
         debugTimed.Draw();
         debugText.Draw();
-        board.Draw();
-        gui.Draw();
+        curState.render();
         spriteBatch.end();
-
 
         //Fucking shape render lines mess everything up, but them in their own batch for now
         spriteBatch.begin();
-
-        for(Component comp : board.components)
-        {
-            if (comp.negTerminal.wire != null)
-                comp.negTerminal.wire.Draw();
-
-            if (comp.posTerminal.wire != null)
-                comp.posTerminal.wire.Draw();
-        }
+        curState.lateRender();
         spriteBatch.end();
-
-
     }
 
     @Override
@@ -159,5 +159,39 @@ public class Main implements ApplicationListener
     public void dispose()
     {
         //To change body of implemented methods use File | Settings | File Templates.
+    }
+
+    //Sets the state
+    public static void setState(GameStates newState)
+    {
+        curStateName = newState;
+
+        switch (newState)
+        {
+            case MainMenu:
+                curState = mainMenuState;
+                mainMenuState.create();
+                break;
+
+            case Sandbox:
+                curState = sandboxState;
+                sandboxState.create();
+                break;
+        }
+    }
+
+    //Convenience funtion for drawing rectangles
+    public static void visualRect(Rectangle rect, float r, float g, float b, float a, boolean solid)
+    {
+        shapeRender.setProjectionMatrix(spriteBatch.getProjectionMatrix());
+        shapeRender.setTransformMatrix(spriteBatch.getTransformMatrix());
+
+        if (solid)
+            shapeRender.begin(ShapeRenderer.ShapeType.FilledRectangle);
+        else
+            shapeRender.begin(ShapeRenderer.ShapeType.Rectangle);
+        shapeRender.setColor(r, g, b, a);
+        shapeRender.rect(rect.x, rect.y, rect.width, rect.height);
+        shapeRender.end();
     }
 }

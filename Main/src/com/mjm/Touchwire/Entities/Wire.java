@@ -1,11 +1,9 @@
-package com.mjm.Touchwire;
+package com.mjm.Touchwire.Entities;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-
-import java.util.Vector;
+import com.mjm.Touchwire.GameManager;
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,11 +34,11 @@ public class Wire
     //Nasty drawing using the shapeRenderer... gross
     public void Draw()
     {
-        Main.shapeRender.begin(ShapeRenderer.ShapeType.Line);
-        Main.shapeRender.setColor(Color.RED);
+        GameManager.shapeRender.begin(ShapeRenderer.ShapeType.Line);
+        GameManager.shapeRender.setColor(Color.RED);
         Gdx.gl.glLineWidth(10);
-        Main.shapeRender.line(posTerminal.Bounds.x*Main.PCvsAndroid+posTerminal.Bounds.width/2,posTerminal.Bounds.y*Main.PCvsAndroid+posTerminal.Bounds.height/2,negTerminal.Bounds.x*Main.PCvsAndroid+posTerminal.Bounds.width/2,negTerminal.Bounds.y*Main.PCvsAndroid+posTerminal.Bounds.height/2);
-        Main.shapeRender.end();
+        GameManager.shapeRender.line(posTerminal.Bounds.x* GameManager.PCvsAndroid+posTerminal.Bounds.width/2,posTerminal.Bounds.y* GameManager.PCvsAndroid+posTerminal.Bounds.height/2,negTerminal.Bounds.x* GameManager.PCvsAndroid+posTerminal.Bounds.width/2,negTerminal.Bounds.y* GameManager.PCvsAndroid+posTerminal.Bounds.height/2);
+        GameManager.shapeRender.end();
     }
 
     public void Delete()

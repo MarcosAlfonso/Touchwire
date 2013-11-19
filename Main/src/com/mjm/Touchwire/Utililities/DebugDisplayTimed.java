@@ -1,7 +1,7 @@
 package com.mjm.Touchwire.Utililities;
 
 import com.badlogic.gdx.utils.TimeUtils;
-import com.mjm.Touchwire.Main;
+import com.mjm.Touchwire.GameManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -42,7 +42,7 @@ public class DebugDisplayTimed extends DebugDisplay
         for(TimedDebug s : timedStrings)
         {
             int i = timedStrings.indexOf(s);
-            Main.font.draw(Main.spriteBatch, s.string, x, (y - (i * 30)));
+            GameManager.font.draw(GameManager.spriteBatch, s.string, x, (y - (i * 30)));
             if ((TimeUtils.nanoTime() - s.StartTime) > s.Age)
             {
                 s.StartTime = -1;

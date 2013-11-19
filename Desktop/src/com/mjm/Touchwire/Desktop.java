@@ -8,8 +8,8 @@ public class Desktop {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
         cfg.title = "Title";
         cfg.useGL20 = true;
-        cfg.width = Main.ScreenX;
-        cfg.height = Main.ScreenY;
-        new LwjglApplication(new Main(), cfg);
+        cfg.width = GameManager.ScreenX;
+        cfg.height = GameManager.ScreenY;
+        new LwjglApplication(new GameManager(), cfg);
     }
 }

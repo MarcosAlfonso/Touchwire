@@ -1,10 +1,9 @@
 package com.mjm;
 
-import android.app.Activity;
 import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.mjm.Touchwire.Main;
+import com.mjm.Touchwire.GameManager;
 
 public class Android extends AndroidApplication
 {
@@ -17,6 +16,6 @@ public class Android extends AndroidApplication
         cfg.useCompass = false;
         //cfg.useWakelock = true;
         cfg.useGL20 = true;
-        initialize(new Main(), cfg);
+        initialize(new GameManager(), cfg);
     }
 }

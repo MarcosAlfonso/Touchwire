@@ -1,9 +1,8 @@
-package com.mjm.Touchwire;
+package com.mjm.Touchwire.Entities;
+import com.mjm.Touchwire.GameManager;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.badlogic.gdx.Gdx;
-import com.mjm.Touchwire.Input;
 
 //The board class represents the surface upon touchwire components are created on
 public class Board
@@ -14,8 +13,8 @@ public class Board
 
     public void Draw()
     {
-        Main.debugText.addDebug("Number of Components: " + components.size());
-        Main.debugText.addDebug("Last Terminal: " + Main.input);
+        GameManager.debugText.addDebug("Number of Components: " + components.size());
+        GameManager.debugText.addDebug("Last Terminal: " + GameManager.input);
 
         //iterates through all components and draws them
         for(Component comp : components)
@@ -31,9 +30,9 @@ public class Board
 
         deleteList.clear();
 
-        if(Main.input.lastTerminal != null)
+        if(GameManager.input.lastTerminal != null)
         {
-            Main.spriteBatch.draw(Main.SelectedTerminalTexture, Main.input.lastTerminal.Bounds.x, Main.input.lastTerminal.Bounds.y);
+            GameManager.spriteBatch.draw(GameManager.SelectedTerminalTexture, GameManager.input.lastTerminal.Bounds.x, GameManager.input.lastTerminal.Bounds.y);
         }
     }
 }

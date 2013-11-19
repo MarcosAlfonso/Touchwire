@@ -1,9 +1,13 @@
-package com.mjm.Touchwire;
+package com.mjm.Touchwire.States;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
+import com.mjm.Touchwire.Entities.*;
+import com.mjm.Touchwire.Utililities.GUI;
+import com.mjm.Touchwire.GameManager;
+import com.mjm.Touchwire.Entities.Terminal;
 
-public class Input implements InputProcessor
+public class SandboxInput implements InputProcessor
 {
 
     public static Terminal lastTerminal = null;
@@ -30,40 +34,46 @@ public class Input implements InputProcessor
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
         //Flips y because you have to okay?
-        int flippedY = Main.ScreenY - screenY / Main.PCvsAndroid;
+        int flippedY = GameManager.ScreenY - screenY / GameManager.PCvsAndroid;
 
         //Hacky shit to make resolution work on both desktop and tablet
-        int halfX = screenX / Main.PCvsAndroid;
+        int halfX = screenX / GameManager.PCvsAndroid;
         int halfY = flippedY;
 
         //BUTTON STUFF
-        if (GUI.BatteryButton.contains(halfX, halfY))
+        if (SandboxState.gui.getButton(SandboxState.Buttons.Battery.name()).Bounds.contains(halfX, halfY))
         {
-            Main.debugTimed.addDebug("Battery Spawned", 1);
-            Main.board.components.add(new Battery(new Vector2(halfX, halfY)));
+            GameManager.debugTimed.addDebug("Battery Spawned", 1);
+            GameManager.board.components.add(new Battery(new Vector2(halfX, halfY)));
 
         }
-        else if (GUI.LightButton.contains(halfX, halfY))
+        else if (SandboxState.gui.getButton(SandboxState.Buttons.Light.name()).Bounds.contains(halfX, halfY))
         {
-            Main.debugTimed.addDebug("Light Spawned", 1);
-            Main.board.components.add(new Light(new Vector2(halfX, halfY)));
+            GameManager.debugTimed.addDebug("Light Spawned", 1);
+            GameManager.board.components.add(new Light(new Vector2(halfX, halfY)));
         }
-        else if (GUI.ClearButton.contains(halfX, halfY))
+        else if (SandboxState.gui.getButton(SandboxState.Buttons.Clear.name()).Bounds.contains(halfX, halfY))
         {
-            Main.board.components.clear();
+            GameManager.board.components.clear();
             lastTerminal = null;
-            Main.debugTimed.addDebug("Board Cleared", 3);
+            GameManager.debugTimed.addDebug("Board Cleared", 3);
         }
-        else if (GUI.TangibleButton.contains(halfX, halfY))
+        else if (SandboxState.gui.getButton(SandboxState.Buttons.Tangible.name()).Bounds.contains(halfX, halfY))
         {
-            Main.debugTimed.addDebug("Tangible Zone Spawned", 1);
-            Main.board.components.add(new Zone(new Vector2(halfX, halfY)));
-
+            GameManager.debugTimed.addDebug("Tangible Zone Spawned", 1);
+            GameManager.board.components.add(new Zone(new Vector2(halfX, halfY)));
+        }
+        else if (SandboxState.gui.getButton(SandboxState.Buttons.Back.name()).Bounds.contains(halfX, halfY))
+        {
+            GameManager.setState(GameManager.GameStates.MainMenu);
         }
 
         //Iterate through all the components on the board, so we can check if anything is getting touched
-        for (Component comp : Main.board.components)
+        for (Component comp : GameManager.board.components)
         {
+            if (comp.Bounds.overlaps(SandboxState.gui.getButton(SandboxState.Buttons.Clear.name()).Bounds))
+                GameManager.board.deleteList.add(comp);
+
             //If they touch an existing component, add pointer to component touchList
             if (comp.Bounds.contains(halfX, halfY))
             {
@@ -78,19 +88,19 @@ public class Input implements InputProcessor
                 //If no terminal selected yet
                 if (lastTerminal == null)
                 {
-                    Main.debugTimed.addDebug("Now select a negative terminal", 5);
+                    GameManager.debugTimed.addDebug("Now select a negative terminal", 5);
                     lastTerminal = comp.posTerminal;
                 }
                 //If they select a positive terminal after starting with positive, error
                 else if (lastTerminal.isPositive)
                 {
-                    Main.debugTimed.addDebug("ERROR: Please select a negative terminal", 3);
+                    GameManager.debugTimed.addDebug("ERROR: Please select a negative terminal", 3);
 
                     //If terminal is negative, and not from the same component, wire
                 }
                 else if (!lastTerminal.isPositive && comp != lastTerminal.Component)
                 {
-                    Main.debugTimed.addDebug("DEBUG: Wire Created", 3);
+                    GameManager.debugTimed.addDebug("DEBUG: Wire Created", 3);
                     Wire newWire = new Wire(comp.posTerminal,lastTerminal);
                     lastTerminal.wire = newWire;
                     comp.posTerminal.wire = newWire;
@@ -105,20 +115,20 @@ public class Input implements InputProcessor
                 //If no terminal selected yet
                 if (lastTerminal == null)
                 {
-                    Main.debugTimed.addDebug("Now select a positive terminal", 5);
+                    GameManager.debugTimed.addDebug("Now select a positive terminal", 5);
                     lastTerminal = comp.negTerminal;
                 }
 
                 //If they select a negative terminal after starting with negative, error
                 else if (!lastTerminal.isPositive)
                 {
-                    Main.debugTimed.addDebug("ERROR: Please select a positive terminal", 3);
+                    GameManager.debugTimed.addDebug("ERROR: Please select a positive terminal", 3);
 
                     //If terminal is negative, and not from the same component, wire
                 }
                 else if (lastTerminal.isPositive && comp != lastTerminal.Component)
                 {
-                    Main.debugTimed.addDebug("DEBUG: Wire Created", 3);
+                    GameManager.debugTimed.addDebug("DEBUG: Wire Created", 3);
                     Wire newWire = new Wire(lastTerminal, comp.negTerminal);
                     lastTerminal.wire = newWire;
                     comp.negTerminal.wire = newWire;
