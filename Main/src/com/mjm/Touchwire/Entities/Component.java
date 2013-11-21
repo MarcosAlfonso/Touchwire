@@ -28,29 +28,17 @@ public class Component
 
     public boolean isPowered;
 
-    //Constructor, needs a position as an argument
-    public Component()
-    {
-        texture = GameManager.lightTextureOn;
-        Bounds = new Rectangle(500,500,128,128);
-
-        Debug = new DebugDisplay(500,500);
-
-        posTerminal = new Terminal(this, true);
-        negTerminal = new Terminal(this, false);
-    }
-
     public Component(Vector2 pos, Texture image)
     {
         texture = image;
         //Sets bounds rectangle position to the position provided, centered based of texture size, size is set to texture
         Bounds = new Rectangle(pos.x-texture.getWidth()/2,pos.y-texture.getWidth()/2,texture.getWidth(),texture.getHeight());
 
-        Debug = new DebugDisplay((int)pos.x,(int)pos.y);
+        Debug = new DebugDisplay((int)(pos.x-Bounds.width/2),(int)(pos.y-Bounds.height/2));
 
         //sets up the terminals
-        posTerminal = new Terminal(this, true);
-        negTerminal = new Terminal(this, false);
+        posTerminal = new Terminal(this,new Vector2(128,64), true);
+        negTerminal = new Terminal(this, new Vector2(128,0), false);
     }
 
     public void Update()
@@ -121,7 +109,7 @@ public class Component
             GameManager.input.lastTerminal = null;
 
 
-        GameManager.board.components.remove(this);
+        SandboxState.board.components.remove(this);
     }
 
     public void processTouch()

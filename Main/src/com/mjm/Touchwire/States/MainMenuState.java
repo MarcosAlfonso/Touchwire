@@ -13,11 +13,20 @@ import com.mjm.Touchwire.Utililities.GameState;
 public class MainMenuState extends GameState
 {
     //GUI and Debug
-    public static GUI gui;
+    public static GUI mainGui;
+    public static GUI levelGui;
+    public static GUI curGui;
 
-    public enum Buttons
+    public static boolean onLevelSelect;
+
+    public enum mainButtons
     {
         Learning,Sandbox,Exit
+    }
+
+    public enum levelButtons
+    {
+        Level1,Level2,Back
     }
 
     public static InputProcessor input = new MainMenuInput();
@@ -28,10 +37,19 @@ public class MainMenuState extends GameState
         //Sets up custom input processing
         Gdx.input.setInputProcessor(input);
 
-        gui = new GUI();
-        gui.AddButton(Buttons.Learning.name(), new Rectangle(GameManager.ScreenX/2,360,200,96), null, Button.Justifications.Center);
-        gui.AddButton(Buttons.Sandbox.name(), new Rectangle(GameManager.ScreenX/2,240,200,96), null, Button.Justifications.Center);
-        gui.AddButton(Buttons.Exit.name(), new Rectangle(GameManager.ScreenX/2,120,200,96), null, Button.Justifications.Center);
+        mainGui = new GUI();
+        mainGui.AddButton(mainButtons.Learning.name(), new Rectangle(GameManager.ScreenX/2,360,200,96), null, Button.Justifications.Center);
+        mainGui.AddButton(mainButtons.Sandbox.name(), new Rectangle(GameManager.ScreenX/2,240,200,96), null, Button.Justifications.Center);
+        mainGui.AddButton(mainButtons.Exit.name(), new Rectangle(GameManager.ScreenX/2,120,200,96), null, Button.Justifications.Center);
+
+        levelGui = new GUI();
+        levelGui.AddButton(levelButtons.Level1.name(), new Rectangle(GameManager.ScreenX/2,360,200,96), null, Button.Justifications.Center);
+        levelGui.AddButton(levelButtons.Level2.name(), new Rectangle(GameManager.ScreenX/2,240,200,96), null, Button.Justifications.Center);
+        levelGui.AddButton(levelButtons.Back.name(), new Rectangle(GameManager.ScreenX/2,120,200,96), null, Button.Justifications.Center);
+
+        onLevelSelect = false;
+        curGui = mainGui;
+
     }
 
     @Override
@@ -45,13 +63,13 @@ public class MainMenuState extends GameState
     public void render()
     {
         GUI.DrawCenteredString(GameManager.fontLarge,"Touchwire", new Vector2(GameManager.ScreenX/2,575));
-        gui.Draw();
+        curGui.Draw();
     }
 
     @Override
     public void lateRender()
     {
-         gui.DebugDraw();
+        curGui.DebugDraw();
     }
 
     @Override

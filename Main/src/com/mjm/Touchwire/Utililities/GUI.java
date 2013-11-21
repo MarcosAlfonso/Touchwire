@@ -34,7 +34,7 @@ public class GUI
                 return button;
         }
 
-        throw new NullPointerException();
+        return null;
     }
 
     //Draws all them buttons

@@ -78,8 +78,6 @@ public class GameManager implements ApplicationListener
 
     public static OrthographicCamera cam;
 
-    public static Board board;
-
     @Override
     //On application creation
     public void create()

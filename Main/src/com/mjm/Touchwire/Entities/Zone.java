@@ -15,15 +15,18 @@ public class Zone extends Component
     }
 
     private TangibleTypes tangibleType;
-    private int topLeftTouch;
-    private int topRightTouch;
+    private int topLeftTouch = -1;
+    private int topRightTouch = -1;
 
     public Zone(Vector2 pos)
     {
         super(pos, GameManager.tangibleZone);
         tangibleType = TangibleTypes.NoTangible;
+        posTerminal.offset = new Vector2(-64,64);
+        negTerminal.offset = new Vector2(-64,0);
         //stores the pointer to a touch
         touchList = new ArrayList<Integer>();
+        SetPosition((int)pos.x,(int)pos.y);
     }
 
     private void detectTangibleType()
@@ -141,6 +144,5 @@ public class Zone extends Component
                 SetPosition((int)(halfX+Bounds.width/2-10),(int)(halfY-Bounds.height/2+10));
             }
         }
-
     }
 }

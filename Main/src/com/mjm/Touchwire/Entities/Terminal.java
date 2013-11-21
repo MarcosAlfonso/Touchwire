@@ -1,6 +1,7 @@
 package com.mjm.Touchwire.Entities;
 
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.mjm.Touchwire.Entities.Component;
 import com.mjm.Touchwire.Entities.Wire;
 import com.mjm.Touchwire.GameManager;
@@ -13,28 +14,23 @@ public class Terminal
     public Rectangle Bounds; //Position and Size rectangle
     public Wire wire; //Wire that is attached to this terminal, if there is one
 
+    public Vector2 offset;
+
     //Constructor needs a Component and need to set polarity
-    public Terminal(Component comp, boolean isPos)
+    public Terminal(Component comp, Vector2 off ,boolean isPos)
     {
         Component = comp;
         isPositive = isPos;
+        offset = off;
+        Bounds = new Rectangle(Component.Bounds.x+offset.x,Component.Bounds.y+offset.y,64,64);
 
-        //Different positions based off polarity
-        if (isPositive)
-            Bounds = new Rectangle(Component.Bounds.x+128,Component.Bounds.y+64,64,64);
-        else
-            Bounds = new Rectangle(Component.Bounds.x+128,Component.Bounds.y,64,64);
     }
 
     //Keeps terminals snapped to parent component
     public void updatePos()
     {
-        Bounds.x =  Component.Bounds.x+128;
-
-        if (isPositive)
-            Bounds.y = Component.Bounds.y+64;
-        else
-            Bounds.y = Component.Bounds.y;
+        Bounds.x = Component.Bounds.x+offset.x;
+        Bounds.y = Component.Bounds.y+offset.y;
     }
 
     //Draws the 2 terminals

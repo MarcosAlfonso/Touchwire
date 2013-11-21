@@ -39,18 +39,47 @@ public class MainMenuInput implements InputProcessor
         int halfY = flippedY;
 
         //BUTTON STUFF
-        if (MainMenuState.gui.getButton(MainMenuState.Buttons.Learning.name()).Bounds.contains(halfX, halfY))
+        //Main Menu
+        if (!MainMenuState.onLevelSelect)
         {
-            GameManager.debugTimed.addDebug("Learning Mode Activated", 1);
+            if (MainMenuState.curGui.getButton(MainMenuState.mainButtons.Learning.name()).Bounds.contains(halfX, halfY))
+            {
+                GameManager.debugTimed.addDebug("Level Select", 1);
+                MainMenuState.onLevelSelect = true;
+                MainMenuState.curGui = MainMenuState.levelGui;
+            }
+            else if (MainMenuState.curGui.getButton(MainMenuState.mainButtons.Sandbox.name()).Bounds.contains(halfX, halfY))
+            {
+                GameManager.debugTimed.addDebug("Sandbox Mode Activated", 1);
+                SandboxState.board.components.clear();
+                GameManager.setState(GameManager.GameStates.Sandbox);
+            }
+            else if (MainMenuState.curGui.getButton(MainMenuState.mainButtons.Exit.name()).Bounds.contains(halfX, halfY))
+            {
+                GameManager.Platform.ExitGame();
+            }
         }
-        else if (MainMenuState.gui.getButton(MainMenuState.Buttons.Sandbox.name()).Bounds.contains(halfX, halfY))
+        //Level Select
+        else
         {
-            GameManager.debugTimed.addDebug("Sandbox Mode Activated", 1);
-            GameManager.setState(GameManager.GameStates.Sandbox);
-        }
-        else if (MainMenuState.gui.getButton(MainMenuState.Buttons.Exit.name()).Bounds.contains(halfX, halfY))
-        {
-            GameManager.Platform.ExitGame();
+            if (MainMenuState.curGui.getButton(MainMenuState.levelButtons.Level1.name()).Bounds.contains(halfX, halfY))
+            {
+                GameManager.debugTimed.addDebug("Load Level 1", 1);
+                GameManager.setState(GameManager.GameStates.Sandbox);
+                SandboxState.LoadOne();
+            }
+            else if (MainMenuState.curGui.getButton(MainMenuState.levelButtons.Level2.name()).Bounds.contains(halfX, halfY))
+            {
+                GameManager.debugTimed.addDebug("Load Level 2", 1);
+                GameManager.setState(GameManager.GameStates.Sandbox);
+                SandboxState.LoadTwo();
+
+            }
+            else if (MainMenuState.curGui.getButton(MainMenuState.levelButtons.Back.name()).Bounds.contains(halfX, halfY))
+            {
+                MainMenuState.onLevelSelect = false;
+                MainMenuState.curGui = MainMenuState.mainGui;
+            }
         }
 
 

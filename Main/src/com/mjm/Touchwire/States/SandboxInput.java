@@ -45,40 +45,32 @@ public class SandboxInput implements InputProcessor
         if (SandboxState.gui.getButton(SandboxState.Buttons.Battery.name()).Bounds.contains(halfX, halfY))
         {
             GameManager.debugTimed.addDebug("Battery Spawned", 1);
-            GameManager.board.components.add(new Battery(new Vector2(halfX, halfY)));
+            SandboxState.board.components.add(new Battery(new Vector2(halfX, halfY)));
 
         }
         else if (SandboxState.gui.getButton(SandboxState.Buttons.Light.name()).Bounds.contains(halfX, halfY))
         {
             GameManager.debugTimed.addDebug("Light Spawned", 1);
-            GameManager.board.components.add(new Light(new Vector2(halfX, halfY)));
+            SandboxState.board.components.add(new Light(new Vector2(halfX, halfY)));
         }
         else if (SandboxState.gui.getButton(SandboxState.Buttons.Clear.name()).Bounds.contains(halfX, halfY))
         {
-            GameManager.board.components.clear();
+            SandboxState.board.components.clear();
             lastTerminal = null;
             GameManager.debugTimed.addDebug("Board Cleared", 3);
         }
         else if (SandboxState.gui.getButton(SandboxState.Buttons.Tangible.name()).Bounds.contains(halfX, halfY))
         {
             GameManager.debugTimed.addDebug("Tangible Zone Spawned", 1);
-            GameManager.board.components.add(new Zone(new Vector2(halfX, halfY)));
+            SandboxState.board.components.add(new Zone(new Vector2(halfX, halfY)));
         }
         else if (SandboxState.gui.getButton(SandboxState.Buttons.Back.name()).Bounds.contains(halfX, halfY))
         {
             GameManager.setState(GameManager.GameStates.MainMenu);
         }
-        else if (SandboxState.gui.getButton(SandboxState.Buttons.Save.name()).Bounds.contains(halfX, halfY))
-        {
-            SandboxState.board.Save();
-        }
-        else if (SandboxState.gui.getButton(SandboxState.Buttons.Load.name()).Bounds.contains(halfX, halfY))
-        {
-            SandboxState.board.Load();
-        }
 
         //Iterate through all the components on the board, so we can check if anything is getting touched
-        for (Component comp : GameManager.board.components)
+        for (Component comp : SandboxState.board.components)
         {
 
             //If they touch an existing component, add pointer to component touchList
