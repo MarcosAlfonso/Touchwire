@@ -37,7 +37,7 @@ public class Wire
         GameManager.shapeRender.begin(ShapeRenderer.ShapeType.Line);
         GameManager.shapeRender.setColor(Color.RED);
         Gdx.gl.glLineWidth(10);
-        GameManager.shapeRender.line(posTerminal.Bounds.x* GameManager.PCvsAndroid+posTerminal.Bounds.width/2,posTerminal.Bounds.y* GameManager.PCvsAndroid+posTerminal.Bounds.height/2,negTerminal.Bounds.x* GameManager.PCvsAndroid+posTerminal.Bounds.width/2,negTerminal.Bounds.y* GameManager.PCvsAndroid+posTerminal.Bounds.height/2);
+        GameManager.shapeRender.line(posTerminal.Bounds.x+posTerminal.Bounds.width/2,posTerminal.Bounds.y+posTerminal.Bounds.height/2,negTerminal.Bounds.x+posTerminal.Bounds.width/2,negTerminal.Bounds.y+posTerminal.Bounds.height/2);
         GameManager.shapeRender.end();
     }
 

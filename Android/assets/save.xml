@@ -1,0 +1,63 @@
+<list>
+  <com.mjm.Touchwire.Entities.Zone>
+    <Bounds>
+      <x>628.0</x>
+      <y>20.0</y>
+      <width>300.0</width>
+      <height>450.0</height>
+    </Bounds>
+    <texture>
+      <minFilter>Nearest</minFilter>
+      <magFilter>Nearest</magFilter>
+      <uWrap>ClampToEdge</uWrap>
+      <vWrap>ClampToEdge</vWrap>
+      <glHandle>6</glHandle>
+      <data class="com.badlogic.gdx.graphics.glutils.FileTextureData">
+        <file class="com.badlogic.gdx.backends.lwjgl.LwjglFileHandle">
+          <file>Entities\TangibleZone.png</file>
+          <type>Internal</type>
+        </file>
+        <width>300</width>
+        <height>450</height>
+        <format>RGBA8888</format>
+        <useMipMaps>false</useMipMaps>
+        <isPrepared>false</isPrepared>
+      </data>
+    </texture>
+    <posTerminal>
+      <Component class="com.mjm.Touchwire.Entities.Zone" reference="../.."/>
+      <isPositive>true</isPositive>
+      <Bounds>
+        <x>756.0</x>
+        <y>84.0</y>
+        <width>64.0</width>
+        <height>64.0</height>
+      </Bounds>
+    </posTerminal>
+    <negTerminal>
+      <Component class="com.mjm.Touchwire.Entities.Zone" reference="../.."/>
+      <isPositive>false</isPositive>
+      <Bounds>
+        <x>756.0</x>
+        <y>20.0</y>
+        <width>64.0</width>
+        <height>64.0</height>
+      </Bounds>
+    </negTerminal>
+    <touchList/>
+    <removeList/>
+    <Debug>
+      <strings>
+        <string>TouchList: []</string>
+        <string>Tangible Type: NoTangible</string>
+        <string>Top Left Touch: -1</string>
+      </strings>
+      <x>628</x>
+      <y>20</y>
+    </Debug>
+    <isPowered>false</isPowered>
+    <tangibleType>NoTangible</tangibleType>
+    <topLeftTouch>-1</topLeftTouch>
+    <topRightTouch>-1</topRightTouch>
+  </com.mjm.Touchwire.Entities.Zone>
+</list>

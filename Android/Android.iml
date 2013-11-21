@@ -40,8 +40,8 @@
     </content>
     <orderEntry type="jdk" jdkName="Android 4.1.2 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Androidlibs" level="project" />
     <orderEntry type="module" module-name="Main" />
+    <orderEntry type="library" name="Androidlibs" level="project" />
   </component>
 </module>
 

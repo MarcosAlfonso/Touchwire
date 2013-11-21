@@ -132,10 +132,10 @@ public class Zone extends Component
                 int screenY = Gdx.input.getY(topLeftTouch);
 
                 //Flips y because you have to okay?
-                int flippedY = GameManager.ScreenY - screenY / GameManager.PCvsAndroid;
+                int flippedY = GameManager.ScreenY - screenY / GameManager.ResolutionResolver;
 
                 //Hacky shit to make resolution work on both desktop and tablet
-                int halfX = screenX / GameManager.PCvsAndroid;
+                int halfX = screenX / GameManager.ResolutionResolver;
                 int halfY = flippedY;
 
                 SetPosition((int)(halfX+Bounds.width/2-10),(int)(halfY-Bounds.height/2+10));

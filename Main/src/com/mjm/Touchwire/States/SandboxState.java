@@ -17,10 +17,8 @@ public class SandboxState extends GameState
 
     public enum Buttons
     {
-        Battery,Light,Tangible,Clear,Back
+        Battery,Light,Tangible,Clear,Back, Save, Load
     }
-
-
 
     public static InputProcessor input = new SandboxInput();
     public static Board board;
@@ -34,6 +32,8 @@ public class SandboxState extends GameState
         gui.AddButton(Buttons.Light.name(), new Rectangle(128,0,96,96), GameManager.lightButtonTexture, Button.Justifications.BottomLeft);
         gui.AddButton(Buttons.Tangible.name(), new Rectangle(256,0,96,96), GameManager.tangibleZoneButton, Button.Justifications.BottomLeft);
         gui.AddButton(Buttons.Clear.name(), new Rectangle(GameManager.ScreenX-96,0,96,96), GameManager.clearButtonTexture, Button.Justifications.BottomLeft);
+        gui.AddButton(Buttons.Load.name(), new Rectangle(GameManager.ScreenX-224,0,96,96), null, Button.Justifications.BottomLeft);
+        gui.AddButton(Buttons.Save.name(), new Rectangle(GameManager.ScreenX-352,0,96,96), null, Button.Justifications.BottomLeft);
         gui.AddButton(Buttons.Back.name(), new Rectangle(GameManager.ScreenX-96,GameManager.ScreenY-96,96,96), GameManager.backButton, Button.Justifications.BottomLeft);
 
         //Sets up custom input processing
@@ -72,6 +72,8 @@ public class SandboxState extends GameState
                 comp.posTerminal.wire.Draw();
             }
         }
+
+        gui.DebugDraw();
     }
 
     @Override

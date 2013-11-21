@@ -4,7 +4,6 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.mjm.Touchwire.Entities.*;
 import com.mjm.Touchwire.GameManager;
-import com.mjm.Touchwire.Utililities.GUI;
 
 public class MainMenuInput implements InputProcessor
 {
@@ -33,13 +32,27 @@ public class MainMenuInput implements InputProcessor
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
         //Flips y because you have to okay?
-        int flippedY = GameManager.ScreenY - screenY / GameManager.PCvsAndroid;
+        int flippedY = GameManager.ScreenY - screenY / GameManager.ResolutionResolver;
 
         //Hacky shit to make resolution work on both desktop and tablet
-        int halfX = screenX / GameManager.PCvsAndroid;
+        int halfX = screenX / GameManager.ResolutionResolver;
         int halfY = flippedY;
 
-        GameManager.setState(GameManager.GameStates.Sandbox);
+        //BUTTON STUFF
+        if (MainMenuState.gui.getButton(MainMenuState.Buttons.Learning.name()).Bounds.contains(halfX, halfY))
+        {
+            GameManager.debugTimed.addDebug("Learning Mode Activated", 1);
+        }
+        else if (MainMenuState.gui.getButton(MainMenuState.Buttons.Sandbox.name()).Bounds.contains(halfX, halfY))
+        {
+            GameManager.debugTimed.addDebug("Sandbox Mode Activated", 1);
+            GameManager.setState(GameManager.GameStates.Sandbox);
+        }
+        else if (MainMenuState.gui.getButton(MainMenuState.Buttons.Exit.name()).Bounds.contains(halfX, halfY))
+        {
+            GameManager.Platform.ExitGame();
+        }
+
 
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }

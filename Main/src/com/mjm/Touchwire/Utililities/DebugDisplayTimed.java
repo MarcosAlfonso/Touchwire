@@ -42,7 +42,7 @@ public class DebugDisplayTimed extends DebugDisplay
         for(TimedDebug s : timedStrings)
         {
             int i = timedStrings.indexOf(s);
-            GameManager.font.draw(GameManager.spriteBatch, s.string, x, (y - (i * 30)));
+            GameManager.fontSmall.draw(GameManager.spriteBatch, s.string, x, (y - (i * 30)));
             if ((TimeUtils.nanoTime() - s.StartTime) > s.Age)
             {
                 s.StartTime = -1;

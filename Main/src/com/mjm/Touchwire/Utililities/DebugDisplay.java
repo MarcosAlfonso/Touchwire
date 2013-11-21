@@ -35,7 +35,7 @@ public class DebugDisplay
         for(String s : strings)
         {
             int i = strings.indexOf(s);
-            GameManager.font.draw(GameManager.spriteBatch, s, x, (y - (i * 30)));
+            GameManager.fontSmall.draw(GameManager.spriteBatch, s, x, (y - (i * 30)));
         }
 
         strings.clear();

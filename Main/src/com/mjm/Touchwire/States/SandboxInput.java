@@ -3,9 +3,10 @@ package com.mjm.Touchwire.States;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
 import com.mjm.Touchwire.Entities.*;
-import com.mjm.Touchwire.Utililities.GUI;
 import com.mjm.Touchwire.GameManager;
 import com.mjm.Touchwire.Entities.Terminal;
+
+import java.io.Console;
 
 public class SandboxInput implements InputProcessor
 {
@@ -34,10 +35,10 @@ public class SandboxInput implements InputProcessor
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
         //Flips y because you have to okay?
-        int flippedY = GameManager.ScreenY - screenY / GameManager.PCvsAndroid;
+        int flippedY = GameManager.ScreenY - screenY / GameManager.ResolutionResolver;
 
         //Hacky shit to make resolution work on both desktop and tablet
-        int halfX = screenX / GameManager.PCvsAndroid;
+        int halfX = screenX / GameManager.ResolutionResolver;
         int halfY = flippedY;
 
         //BUTTON STUFF
@@ -66,6 +67,14 @@ public class SandboxInput implements InputProcessor
         else if (SandboxState.gui.getButton(SandboxState.Buttons.Back.name()).Bounds.contains(halfX, halfY))
         {
             GameManager.setState(GameManager.GameStates.MainMenu);
+        }
+        else if (SandboxState.gui.getButton(SandboxState.Buttons.Save.name()).Bounds.contains(halfX, halfY))
+        {
+            SandboxState.board.Save();
+        }
+        else if (SandboxState.gui.getButton(SandboxState.Buttons.Load.name()).Bounds.contains(halfX, halfY))
+        {
+            SandboxState.board.Load();
         }
 
         //Iterate through all the components on the board, so we can check if anything is getting touched

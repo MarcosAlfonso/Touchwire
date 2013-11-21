@@ -19,8 +19,7 @@ import com.mjm.Touchwire.Utililities.GameState;
 
 public class GameManager implements ApplicationListener
 {
-    //PC = 1 : Android = 2
-    public static int PCvsAndroid = 2;
+    public static int ResolutionResolver;
 
     //Screen resolution
     public static final int ScreenX = 1280;
@@ -31,6 +30,13 @@ public class GameManager implements ApplicationListener
     {
         MainMenu, Sandbox,
     }
+
+    public GameManager(platformSpecific platform)
+    {
+        Platform = platform;
+    }
+
+    public static platformSpecific Platform;
 
     static GameStates curStateName = GameStates.MainMenu;
     public static GameState curState;
@@ -44,24 +50,28 @@ public class GameManager implements ApplicationListener
     public static SandboxInput input = new SandboxInput();
 
     //Textures
+    //Entities
     public static Texture batteryTexture;
-    public static Texture batteryButtonTexture;
-    public static Texture defaultTexture;
     public static Texture lightTextureOff;
     public static Texture lightTextureOn;
-    public static Texture lightButtonTexture;
     public static Texture NegativeTerminalTexture;
     public static Texture PositiveTerminalTexture;
-    public static Texture SelectedTerminalTexture;
-    public static Texture blank;
-    public static Texture clearButtonTexture;
-    public static BitmapFont font;
-    public static BitmapFont largeFont;
     public static Texture tangibleZone;
     public static Texture tangibleLightOff;
     public static Texture tangibleLightOn;
+
+    //Fonts
+    public static BitmapFont fontSmall;
+    public static BitmapFont fontMedium;
+    public static BitmapFont fontLarge;
+
+    //GUI
+    public static Texture clearButtonTexture;
     public static Texture tangibleZoneButton;
     public static Texture backButton;
+    public static Texture batteryButtonTexture;
+    public static Texture lightButtonTexture;
+    public static Texture SelectedTerminalTexture;
 
     public static DebugDisplay debugText;
     public static DebugDisplayTimed debugTimed;
@@ -78,31 +88,37 @@ public class GameManager implements ApplicationListener
         debugText = new DebugDisplay(20, 780);
         debugTimed = new DebugDisplayTimed(800, 780);
 
-        //Texture loading
-        batteryTexture = new Texture(Gdx.files.internal("BatteryPack.png"));
-        batteryButtonTexture = new Texture(Gdx.files.internal("BatteryButton.png"));
-        defaultTexture = new Texture(Gdx.files.internal("defaultTexture.png"));
-        lightTextureOff = new Texture(Gdx.files.internal("DigitalLightOff.png"));
-        lightTextureOn = new Texture(Gdx.files.internal("DigitalLightOn.png"));
-        lightButtonTexture = new Texture(Gdx.files.internal("LightButton.png"));
-        NegativeTerminalTexture = new Texture(Gdx.files.internal("NegativeTerminal.png"));
-        PositiveTerminalTexture = new Texture(Gdx.files.internal("PositiveTerminal.png"));
-        SelectedTerminalTexture = new Texture(Gdx.files.internal("terminalSelect.png"));
-        clearButtonTexture = new Texture(Gdx.files.internal("clearButton.png"));
-        blank = new Texture(Gdx.files.internal("blank.png"));
-        font = new BitmapFont(Gdx.files.internal("Helv25.fnt"), false);
-        largeFont = new BitmapFont(Gdx.files.internal("Helv65.fnt"), false);
-        tangibleZone = new Texture(Gdx.files.internal("TangibleZone.png"));
-        tangibleLightOff = new Texture(Gdx.files.internal("TangibleLightOff.png"));
-        tangibleLightOn = new Texture(Gdx.files.internal("TangibleLightOn.png"));
-        tangibleZoneButton = new Texture(Gdx.files.internal("TangibleZoneButton.png"));
-        backButton = new Texture(Gdx.files.internal("backButton.png"));
+        //Texture Loading
+        //Entities
+        batteryTexture = new Texture(Gdx.files.internal("Entities/BatteryPack.png"));
+        lightTextureOff = new Texture(Gdx.files.internal("Entities/DigitalLightOff.png"));
+        lightTextureOn = new Texture(Gdx.files.internal("Entities/DigitalLightOn.png"));
+        NegativeTerminalTexture = new Texture(Gdx.files.internal("Entities/NegativeTerminal.png"));
+        PositiveTerminalTexture = new Texture(Gdx.files.internal("Entities/PositiveTerminal.png"));
+        tangibleZone = new Texture(Gdx.files.internal("Entities/TangibleZone.png"));
+        tangibleLightOff = new Texture(Gdx.files.internal("Entities/TangibleLightOff.png"));
+        tangibleLightOn = new Texture(Gdx.files.internal("Entities/TangibleLightOn.png"));
+
+        //Fonts
+        fontSmall = new BitmapFont(Gdx.files.internal("Fonts/Helv25.fnt"), false);
+        fontMedium = new BitmapFont(Gdx.files.internal("Fonts/Helv65.fnt"), false);
+        fontLarge = new BitmapFont(Gdx.files.internal("Fonts/Helv200.fnt"), false);
+
+        //GUI
+        SelectedTerminalTexture = new Texture(Gdx.files.internal("GUI/terminalSelect.png"));
+        clearButtonTexture = new Texture(Gdx.files.internal("GUI/clearButton.png"));
+        batteryButtonTexture = new Texture(Gdx.files.internal("GUI/BatteryButton.png"));
+        lightButtonTexture = new Texture(Gdx.files.internal("GUI/LightButton.png"));
+        tangibleZoneButton = new Texture(Gdx.files.internal("GUI/TangibleZoneButton.png"));
+        backButton = new Texture(Gdx.files.internal("GUI/backButton.png"));
 
         //Sets up custom input processing
         Gdx.input.setInputProcessor(input);
 
         //Camera initializing
         cam = new OrthographicCamera(ScreenX, ScreenY);
+
+        Platform.setResolutionResolver();
 
         spriteBatch = new SpriteBatch();
         shapeRender = new ShapeRenderer();
@@ -181,10 +197,11 @@ public class GameManager implements ApplicationListener
     }
 
     //Convenience funtion for drawing rectangles
-    public static void visualRect(Rectangle rect, float r, float g, float b, float a, boolean solid)
+    public static void DrawRect(Rectangle rect, float r, float g, float b, float a, boolean solid)
     {
         shapeRender.setProjectionMatrix(spriteBatch.getProjectionMatrix());
         shapeRender.setTransformMatrix(spriteBatch.getTransformMatrix());
+        Gdx.gl.glLineWidth(2);
 
         if (solid)
             shapeRender.begin(ShapeRenderer.ShapeType.FilledRectangle);
@@ -193,5 +210,11 @@ public class GameManager implements ApplicationListener
         shapeRender.setColor(r, g, b, a);
         shapeRender.rect(rect.x, rect.y, rect.width, rect.height);
         shapeRender.end();
+    }
+
+    public interface platformSpecific
+    {
+        public void ExitGame();
+        public void setResolutionResolver();
     }
 }

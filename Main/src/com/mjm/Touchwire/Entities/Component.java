@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.mjm.Touchwire.GameManager;
 import com.mjm.Touchwire.States.SandboxState;
 import com.mjm.Touchwire.Utililities.DebugDisplay;
-import com.mjm.Touchwire.Utililities.GUI;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,19 +15,31 @@ import java.util.List;
 public class Component
 {
     public Rectangle Bounds; //Rectangle bounds represent size and location of components
-    public Texture texture = GameManager.defaultTexture;
+    public Texture texture;
 
     //The positive and negative terminals
     public Terminal posTerminal;
     public Terminal negTerminal;
 
     public List<Integer> touchList = new ArrayList<Integer>();
+    public List<Integer> removeList = new ArrayList<Integer>();
 
     public DebugDisplay Debug;
 
     public boolean isPowered;
 
     //Constructor, needs a position as an argument
+    public Component()
+    {
+        texture = GameManager.lightTextureOn;
+        Bounds = new Rectangle(500,500,128,128);
+
+        Debug = new DebugDisplay(500,500);
+
+        posTerminal = new Terminal(this, true);
+        negTerminal = new Terminal(this, false);
+    }
+
     public Component(Vector2 pos, Texture image)
     {
         texture = image;
@@ -84,14 +95,14 @@ public class Component
     {
         if (touchList.size() > 0)
         {
-            int screenX = Gdx.input.getX(0);
-            int screenY = Gdx.input.getY(0);
+            int screenX = Gdx.input.getX(touchList.get(0));
+            int screenY = Gdx.input.getY(touchList.get(0));
 
             //Flips y because you have to okay?
-            int flippedY = GameManager.ScreenY - screenY / GameManager.PCvsAndroid;
+            int flippedY = GameManager.ScreenY - screenY / GameManager.ResolutionResolver;
 
             //Hacky shit to make resolution work on both desktop and tablet
-            int halfX = screenX / GameManager.PCvsAndroid;
+            int halfX = screenX / GameManager.ResolutionResolver;
             int halfY = flippedY;
             SetPosition(halfX,halfY);
         }
@@ -115,7 +126,7 @@ public class Component
 
     public void processTouch()
     {
-        List<Integer> removeList = new ArrayList<Integer>();
+        removeList.clear();
 
         for(int i : touchList)
         {
@@ -123,10 +134,10 @@ public class Component
             int screenY = Gdx.input.getY(i);
 
             //Flips y because you have to okay?
-            int flippedY = GameManager.ScreenY - screenY / GameManager.PCvsAndroid;
+            int flippedY = GameManager.ScreenY - screenY / GameManager.ResolutionResolver;
 
             //Hacky shit to make resolution work on both desktop and tablet
-            int halfX = screenX / GameManager.PCvsAndroid;
+            int halfX = screenX / GameManager.ResolutionResolver;
             int halfY = flippedY;
 
             if (!Gdx.input.isTouched(i))

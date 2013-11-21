@@ -1,7 +1,10 @@
 package com.mjm.Touchwire.Utililities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.mjm.Touchwire.GameManager;
 
 import java.util.ArrayList;
@@ -42,5 +45,24 @@ public class GUI
             button.Draw();
         }
     }
+
+    public void DebugDraw()
+    {
+        for(Button button : Buttons)
+        {
+            button.DebugDraw();
+        }
+    }
+
+    public static void DrawCenteredString(BitmapFont font, String text, Vector2 Pos)
+    {
+        BitmapFont.TextBounds textBound = font.getBounds(text);
+        Vector2 size = new Vector2(textBound.width,textBound.height);
+        size = size.mul(0.5f);
+        Vector2 origin = new Vector2(Pos.x - size.x, Pos.y + size.y);
+
+        font.draw(GameManager.spriteBatch, text, origin.x, origin.y);
+    }
+
 }
 

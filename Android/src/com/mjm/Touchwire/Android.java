@@ -1,9 +1,8 @@
-package com.mjm;
+package com.mjm.Touchwire;
 
 import android.os.Bundle;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.mjm.Touchwire.GameManager;
 
 public class Android extends AndroidApplication
 {
@@ -16,6 +15,20 @@ public class Android extends AndroidApplication
         cfg.useCompass = false;
         //cfg.useWakelock = true;
         cfg.useGL20 = true;
-        initialize(new GameManager(), cfg);
+        initialize(new GameManager(new AndroidPlatform()), cfg);
+    }
+
+    public class AndroidPlatform implements GameManager.platformSpecific
+    {
+        public void ExitGame()
+        {
+            moveTaskToBack(true);
+        }
+
+        public void setResolutionResolver()
+        {
+            GameManager.ResolutionResolver = 2;
+        }
+
     }
 }
