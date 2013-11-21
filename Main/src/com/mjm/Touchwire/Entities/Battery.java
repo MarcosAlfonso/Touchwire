@@ -53,7 +53,6 @@ public class Battery extends Component
 
             isCircuitClosed = true;
         }
-
     }
 
     //Totally dope recursive function that gets all the components in the series, like serious it is beautiful
@@ -61,9 +60,14 @@ public class Battery extends Component
     {
         if (posTerm.wire != null && posTerm.wire.negTerminal.Component != this)
         {
+            if (!posTerm.Component.transferPower)
+                return;
+
             Component newComp = posTerm.wire.negTerminal.Component;
             ComponentsInSeries.add(newComp);
             getSeriesComponents(newComp.posTerminal);
         }
+
+
     }
 }

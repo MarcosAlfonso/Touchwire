@@ -64,6 +64,11 @@ public class SandboxInput implements InputProcessor
             GameManager.debugTimed.addDebug("Tangible Zone Spawned", 1);
             SandboxState.board.components.add(new Zone(new Vector2(halfX, halfY)));
         }
+        else if (SandboxState.gui.getButton(SandboxState.Buttons.Switch.name()).Bounds.contains(halfX, halfY))
+        {
+            GameManager.debugTimed.addDebug("Switch Spawned", 1);
+            SandboxState.board.components.add(new Switch(new Vector2(halfX, halfY)));
+        }
         else if (SandboxState.gui.getButton(SandboxState.Buttons.Back.name()).Bounds.contains(halfX, halfY))
         {
             GameManager.setState(GameManager.GameStates.MainMenu);
@@ -77,6 +82,8 @@ public class SandboxInput implements InputProcessor
             if (comp.Bounds.contains(halfX, halfY))
             {
                 comp.touchList.add(pointer);
+                if (comp instanceof Switch)
+                    ((Switch) comp).isClosed=!((Switch) comp).isClosed;
                 return true;
             }
 

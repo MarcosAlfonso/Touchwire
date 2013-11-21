@@ -59,6 +59,8 @@ public class GameManager implements ApplicationListener
     public static Texture tangibleZone;
     public static Texture tangibleLightOff;
     public static Texture tangibleLightOn;
+    public static Texture openSwitchTexture;
+    public static Texture closeSwitchTexture;
 
     //Fonts
     public static BitmapFont fontSmall;
@@ -72,6 +74,7 @@ public class GameManager implements ApplicationListener
     public static Texture batteryButtonTexture;
     public static Texture lightButtonTexture;
     public static Texture SelectedTerminalTexture;
+    public static Texture SwitchButton;
 
     public static DebugDisplay debugText;
     public static DebugDisplayTimed debugTimed;
@@ -96,6 +99,8 @@ public class GameManager implements ApplicationListener
         tangibleZone = new Texture(Gdx.files.internal("Entities/TangibleZone.png"));
         tangibleLightOff = new Texture(Gdx.files.internal("Entities/TangibleLightOff.png"));
         tangibleLightOn = new Texture(Gdx.files.internal("Entities/TangibleLightOn.png"));
+        openSwitchTexture = new Texture(Gdx.files.internal("Entities/OpenSwitch.png"));
+        closeSwitchTexture = new Texture(Gdx.files.internal("Entities/ClosedSwitch.png"));
 
         //Fonts
         fontSmall = new BitmapFont(Gdx.files.internal("Fonts/Helv25.fnt"), false);
@@ -109,6 +114,7 @@ public class GameManager implements ApplicationListener
         lightButtonTexture = new Texture(Gdx.files.internal("GUI/LightButton.png"));
         tangibleZoneButton = new Texture(Gdx.files.internal("GUI/TangibleZoneButton.png"));
         backButton = new Texture(Gdx.files.internal("GUI/backButton.png"));
+        SwitchButton = new Texture(Gdx.files.internal("GUI/SwitchButton.png"));
 
         //Sets up custom input processing
         Gdx.input.setInputProcessor(input);

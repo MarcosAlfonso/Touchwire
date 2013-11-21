@@ -24,6 +24,8 @@ public class Component
     public List<Integer> touchList = new ArrayList<Integer>();
     public List<Integer> removeList = new ArrayList<Integer>();
 
+    public boolean transferPower = true;
+
     public DebugDisplay Debug;
 
     public boolean isPowered;

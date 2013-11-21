@@ -20,7 +20,7 @@ public class SandboxState extends GameState
 
     public enum Buttons
     {
-        Battery,Light,Tangible,Clear,Back
+        Battery,Light,Tangible,Switch,Clear,Back
     }
 
     public static InputProcessor input = new SandboxInput();
@@ -34,6 +34,7 @@ public class SandboxState extends GameState
         gui.AddButton(Buttons.Battery.name(), new Rectangle(0,0,96,96), GameManager.batteryButtonTexture, Button.Justifications.BottomLeft);
         gui.AddButton(Buttons.Light.name(), new Rectangle(128,0,96,96), GameManager.lightButtonTexture, Button.Justifications.BottomLeft);
         gui.AddButton(Buttons.Tangible.name(), new Rectangle(256,0,96,96), GameManager.tangibleZoneButton, Button.Justifications.BottomLeft);
+        gui.AddButton(Buttons.Switch.name(), new Rectangle(385,0,96,96), GameManager.SwitchButton, Button.Justifications.BottomLeft);
         gui.AddButton(Buttons.Clear.name(), new Rectangle(GameManager.ScreenX-96,0,96,96), GameManager.clearButtonTexture, Button.Justifications.BottomLeft);
         gui.AddButton(Buttons.Back.name(), new Rectangle(GameManager.ScreenX-96,GameManager.ScreenY-96,96,96), GameManager.backButton, Button.Justifications.BottomLeft);
 
