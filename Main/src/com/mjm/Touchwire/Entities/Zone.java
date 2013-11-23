@@ -93,6 +93,8 @@ public class Zone extends Component
                 componentKey = -1; //error state;
         }
 
+        tangibleType = TangibleTypes.LightTangible;
+
 
     }
 
@@ -103,6 +105,7 @@ public class Zone extends Component
 
         Debug.addDebug("Tangible Type: " + tangibleType);
         Debug.addDebug("Top Left Touch: " + topLeftTouch);
+        Debug.addDebug("isPowered: " + isPowered);
 
         detectTangibleType();
         switch(tangibleType){

@@ -54,6 +54,11 @@ public class SandboxInput implements InputProcessor
             lastTerminal = null;
             GameManager.debugTimed.addDebug("Board Cleared", 3);
         }
+        else if (SandboxState.gui.getButton(SandboxState.Buttons.Light.name()).Bounds.contains(halfX, halfY))
+        {
+            GameManager.debugTimed.addDebug("Tangible Zone Spawned", 1);
+            SandboxState.board.components.add(new Light(new Vector2(halfX, halfY)));
+        }
         else if (SandboxState.gui.getButton(SandboxState.Buttons.Tangible.name()).Bounds.contains(halfX, halfY))
         {
             GameManager.debugTimed.addDebug("Tangible Zone Spawned", 1);
