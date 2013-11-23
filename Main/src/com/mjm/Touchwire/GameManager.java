@@ -91,11 +91,11 @@ public class GameManager implements ApplicationListener
 
         //Texture Loading
         //Entities
-        batteryTexture = new Texture(Gdx.files.internal("Entities/BatteryPack.png"));
+        batteryTexture = new Texture(Gdx.files.internal("Entities/newBatteryPack.png"));
         lightTextureOff = new Texture(Gdx.files.internal("Entities/DigitalLightOff.png"));
         lightTextureOn = new Texture(Gdx.files.internal("Entities/DigitalLightOn.png"));
-        NegativeTerminalTexture = new Texture(Gdx.files.internal("Entities/NegativeTerminal.png"));
-        PositiveTerminalTexture = new Texture(Gdx.files.internal("Entities/PositiveTerminal.png"));
+        NegativeTerminalTexture = new Texture(Gdx.files.internal("Entities/newNegativeTerminal.png"));
+        PositiveTerminalTexture = new Texture(Gdx.files.internal("Entities/newPositiveTerminal.png"));
         tangibleZone = new Texture(Gdx.files.internal("Entities/TangibleZone.png"));
         tangibleLightOff = new Texture(Gdx.files.internal("Entities/TangibleLightOff.png"));
         tangibleLightOn = new Texture(Gdx.files.internal("Entities/TangibleLightOn.png"));
@@ -109,11 +109,11 @@ public class GameManager implements ApplicationListener
 
         //GUI
         SelectedTerminalTexture = new Texture(Gdx.files.internal("GUI/terminalSelect.png"));
-        clearButtonTexture = new Texture(Gdx.files.internal("GUI/clearButton.png"));
-        batteryButtonTexture = new Texture(Gdx.files.internal("GUI/BatteryButton.png"));
+        clearButtonTexture = new Texture(Gdx.files.internal("GUI/newclearButton.png"));
+        batteryButtonTexture = new Texture(Gdx.files.internal("GUI/newBatteryButton.png"));
         lightButtonTexture = new Texture(Gdx.files.internal("GUI/LightButton.png"));
-        tangibleZoneButton = new Texture(Gdx.files.internal("GUI/TangibleZoneButton.png"));
-        backButton = new Texture(Gdx.files.internal("GUI/backButton.png"));
+        tangibleZoneButton = new Texture(Gdx.files.internal("GUI/newTangibleZoneButton.png"));
+        backButton = new Texture(Gdx.files.internal("GUI/newbackButton.png"));
         SwitchButton = new Texture(Gdx.files.internal("GUI/SwitchButton.png"));
 
         //Sets up custom input processing

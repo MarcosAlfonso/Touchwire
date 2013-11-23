@@ -18,6 +18,8 @@ public class Switch extends Component
     public Switch(Vector2 pos)
     {
         super(pos, GameManager.openSwitchTexture);
+        posTerminal.offset = new Vector2(-64,32);
+        negTerminal.offset = new Vector2(128,32);
     }
 
     public void Update()

@@ -48,11 +48,6 @@ public class SandboxInput implements InputProcessor
             SandboxState.board.components.add(new Battery(new Vector2(halfX, halfY)));
 
         }
-        else if (SandboxState.gui.getButton(SandboxState.Buttons.Light.name()).Bounds.contains(halfX, halfY))
-        {
-            GameManager.debugTimed.addDebug("Light Spawned", 1);
-            SandboxState.board.components.add(new Light(new Vector2(halfX, halfY)));
-        }
         else if (SandboxState.gui.getButton(SandboxState.Buttons.Clear.name()).Bounds.contains(halfX, halfY))
         {
             SandboxState.board.components.clear();

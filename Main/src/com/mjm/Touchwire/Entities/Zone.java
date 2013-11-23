@@ -22,8 +22,8 @@ public class Zone extends Component
     {
         super(pos, GameManager.tangibleZone);
         tangibleType = TangibleTypes.NoTangible;
-        posTerminal.offset = new Vector2(-64,64);
-        negTerminal.offset = new Vector2(-64,0);
+        posTerminal.offset = new Vector2(-64,0);
+        negTerminal.offset = new Vector2(-64,64);
         //stores the pointer to a touch
         touchList = new ArrayList<Integer>();
         SetPosition((int)pos.x,(int)pos.y);
