@@ -1,0 +1,10 @@
+Remake Tangible
+Powerpoint
+Level 2 DONE
+Fix Switch DONE
+Level Text DONE
+Place Terminals conveniently
+Draggable Wires
+Lock Component Pos DONE
+Light Dome
+Finalize Art

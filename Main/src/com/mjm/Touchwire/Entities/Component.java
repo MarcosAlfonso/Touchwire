@@ -24,11 +24,11 @@ public class Component
     public List<Integer> touchList = new ArrayList<Integer>();
     public List<Integer> removeList = new ArrayList<Integer>();
 
-    public boolean transferPower = true;
-
     public DebugDisplay Debug;
 
     public boolean isPowered;
+    public boolean transferPower = true;
+    public boolean lockPosition;
 
     public Component(Vector2 pos, Texture image)
     {
@@ -43,10 +43,17 @@ public class Component
         negTerminal = new Terminal(this, new Vector2(128,0), false);
     }
 
+    public Component(Vector2 pos, Texture image, Boolean lockPos)
+    {
+        this(pos, image);
+        lockPosition = lockPos;
+    }
+
     public void Update()
     {
         //Debugs
         Debug.addDebug("TouchList: " + touchList.toString());
+        Debug.addDebug("Pos: " + Bounds.x + "," + Bounds.y);
         processTouch();
 
         if (Bounds.overlaps(SandboxState.gui.getButton(SandboxState.Buttons.Clear.name()).Bounds))
@@ -54,7 +61,8 @@ public class Component
             Board.deleteList.add(this);
         }
 
-        UpdatePosition();
+        if (!lockPosition)
+            UpdatePosition();
     }
 
     public void Draw()

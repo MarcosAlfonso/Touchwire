@@ -23,8 +23,6 @@ public class Board
 
     public void Draw()
     {
-        GameManager.debugText.addDebug("Number of Components: " + components.size());
-
         //iterates through all components and draws them
         for (Component comp : components)
         {

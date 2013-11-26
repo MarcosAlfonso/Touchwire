@@ -9,7 +9,7 @@ import com.mjm.Touchwire.GameManager;
 //Terminal can be positive or negative, for connecting components with wires
 public class Terminal
 {
-    public com.mjm.Touchwire.Entities.Component Component; //Component that owns the terminals
+    public Component Component; //Component that owns the terminals
     public boolean isPositive; //Is it a positive or negative terminal
     public Rectangle Bounds; //Position and Size rectangle
     public Wire wire; //Wire that is attached to this terminal, if there is one

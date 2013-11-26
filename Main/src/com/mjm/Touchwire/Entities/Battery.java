@@ -13,8 +13,7 @@ public class Battery extends Component
 
     //List of Components connected to this batterys
     public List<Component> ComponentsInSeries = new ArrayList<Component>(); //dynamic list of Component(s)
-
-    public static List<Component> connectedComponents = new ArrayList<Component>(); //list of components connected to this battery
+    private boolean offSwitch;
 
 
     //constructor inherits from parent, but sets texture
@@ -43,7 +42,7 @@ public class Battery extends Component
         getSeriesComponents(posTerminal);
 
         //if we have components, and the last component of the circuit is wired to this batteries neg terminal, and there is an actual wire between them
-        if (ComponentsInSeries.size() > 0 && ComponentsInSeries.get(ComponentsInSeries.size()-1).posTerminal.wire == this.negTerminal.wire && this.negTerminal.wire != null)
+        if (ComponentsInSeries.size() > 0 && ComponentsInSeries.get(ComponentsInSeries.size()-1).posTerminal.wire == this.negTerminal.wire && this.negTerminal.wire != null && !checkOffSwitch())
         {
             //circuits closed! give all components power
             for(Component comp : ComponentsInSeries)
@@ -55,19 +54,29 @@ public class Battery extends Component
         }
     }
 
-    //Totally dope recursive function that gets all the components in the series, like serious it is beautiful
+        //Totally dope recursive function that gets all the components in the series, like serious it is beautiful
     private void getSeriesComponents(Terminal posTerm)
     {
         if (posTerm.wire != null && posTerm.wire.negTerminal.Component != this)
         {
-            if (!posTerm.Component.transferPower)
-                return;
 
             Component newComp = posTerm.wire.negTerminal.Component;
             ComponentsInSeries.add(newComp);
             getSeriesComponents(newComp.posTerminal);
         }
+    }
 
+    private boolean checkOffSwitch()
+    {
+        for(Component comp : ComponentsInSeries)
+        {
+            if (comp instanceof Switch && !comp.transferPower)
+            {
+                return true;
+            }
+        }
 
+        return false;
     }
 }
+

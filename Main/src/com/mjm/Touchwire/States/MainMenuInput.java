@@ -52,6 +52,8 @@ public class MainMenuInput implements InputProcessor
             {
                 GameManager.debugTimed.addDebug("Sandbox Mode Activated", 1);
                 SandboxState.board.components.clear();
+                SandboxState.tutorialText1 = "";
+                SandboxState.tutorialText2 = "";
                 GameManager.setState(GameManager.GameStates.Sandbox);
             }
             else if (MainMenuState.curGui.getButton(MainMenuState.mainButtons.Exit.name()).Bounds.contains(halfX, halfY))

@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.mjm.Touchwire.Entities.Battery;
-import com.mjm.Touchwire.Entities.Board;
-import com.mjm.Touchwire.Entities.Component;
-import com.mjm.Touchwire.Entities.Zone;
+import com.mjm.Touchwire.Entities.*;
 import com.mjm.Touchwire.GameManager;
 import com.mjm.Touchwire.Utililities.Button;
 import com.mjm.Touchwire.Utililities.GUI;
@@ -25,6 +22,8 @@ public class SandboxState extends GameState
 
     public static InputProcessor input = new SandboxInput();
     public static Board board;
+    public static String tutorialText1 = "";
+    public static String tutorialText2 = "";
 
     @Override
     public void create()
@@ -53,6 +52,9 @@ public class SandboxState extends GameState
     //Run every frame
     public void render()
     {
+        GameManager.debugText.addDebug(tutorialText1);
+        GameManager.debugText.addDebug(tutorialText2);
+
         //Sprite batch drawing
         board.Draw();
         gui.Draw();
@@ -103,11 +105,32 @@ public class SandboxState extends GameState
         Board.components.add(new Battery(new Vector2(153,388)));
         Board.components.add(new Zone(new Vector2(950,432)));
 
+        tutorialText1 = "Yo test test, connect the Positive (+) to Negative (-)";
+        tutorialText2 = "Test Level 1";
+
+        //Lock them components
+        for (Component comp : Board.components)
+        {
+            comp.lockPosition = true;
+        }
+
     }
 
     public static void LoadTwo()
     {
         Board.components.clear();
+        Board.components.add(new Battery(new Vector2(153,588)));
+        Board.components.add(new Zone(new Vector2(950,432)));
+        Board.components.add(new Switch(new Vector2(364,200)));
+
+        tutorialText1 = "Yo test test, connect the Positive (+) to Negative (-)";
+        tutorialText2 = "Test Level 2";
+
+        //Lock them components
+        for (Component comp : Board.components)
+        {
+            comp.lockPosition = true;
+        }
     }
 
 }
