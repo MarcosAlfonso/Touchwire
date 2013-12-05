@@ -42,31 +42,4 @@ public class Board
             GameManager.spriteBatch.draw(GameManager.SelectedTerminalTexture, GameManager.input.lastTerminal.Bounds.x, GameManager.input.lastTerminal.Bounds.y);
         }
     }
-
-    public void Save()
-    {
-        XStream xstream = new XStream();
-
-        String xml = xstream.toXML(components);
-
-        FileHandle file = Gdx.files.local("save.xml");
-        file.writeString(xml,false);
-
-        GameManager.debugTimed.addDebug("Game Saved!", 4);
-    }
-
-    public void Load()
-    {
-        XStream xstream = new XStream();
-
-        FileHandle file = Gdx.files.internal("save.xml");
-        String xml = file.readString();
-
-        components = (List<Component>)xstream.fromXML(xml);
-
-        GameManager.debugTimed.addDebug(xml, 1);
-
-
-    }
-
 }

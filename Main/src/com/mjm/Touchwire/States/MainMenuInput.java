@@ -7,9 +7,6 @@ import com.mjm.Touchwire.GameManager;
 
 public class MainMenuInput implements InputProcessor
 {
-
-    public static Terminal lastTerminal = null;
-
     @Override
     public boolean keyDown(int keycode)
     {
@@ -40,21 +37,28 @@ public class MainMenuInput implements InputProcessor
 
         //BUTTON STUFF
         //Main Menu
-        if (!MainMenuState.onLevelSelect)
+
+        if (MainMenuState.drawCredits)
+        {
+            MainMenuState.drawCredits = false;
+        }
+        else if (!MainMenuState.onLevelSelect)
         {
             if (MainMenuState.curGui.getButton(MainMenuState.mainButtons.Learning.name()).Bounds.contains(halfX, halfY))
             {
-                GameManager.debugTimed.addDebug("Level Select", 1);
                 MainMenuState.onLevelSelect = true;
                 MainMenuState.curGui = MainMenuState.levelGui;
             }
             else if (MainMenuState.curGui.getButton(MainMenuState.mainButtons.Sandbox.name()).Bounds.contains(halfX, halfY))
             {
-                GameManager.debugTimed.addDebug("Sandbox Mode Activated", 1);
                 SandboxState.board.components.clear();
                 SandboxState.tutorialText1 = "";
                 SandboxState.tutorialText2 = "";
                 GameManager.setState(GameManager.GameStates.Sandbox);
+            }
+            else if (MainMenuState.curGui.getButton(MainMenuState.mainButtons.Credits.name()).Bounds.contains(halfX, halfY))
+            {
+                MainMenuState.drawCredits = true;
             }
             else if (MainMenuState.curGui.getButton(MainMenuState.mainButtons.Exit.name()).Bounds.contains(halfX, halfY))
             {
@@ -66,13 +70,11 @@ public class MainMenuInput implements InputProcessor
         {
             if (MainMenuState.curGui.getButton(MainMenuState.levelButtons.Level1.name()).Bounds.contains(halfX, halfY))
             {
-                GameManager.debugTimed.addDebug("Load Level 1", 1);
                 GameManager.setState(GameManager.GameStates.Sandbox);
                 SandboxState.LoadOne();
             }
             else if (MainMenuState.curGui.getButton(MainMenuState.levelButtons.Level2.name()).Bounds.contains(halfX, halfY))
             {
-                GameManager.debugTimed.addDebug("Load Level 2", 1);
                 GameManager.setState(GameManager.GameStates.Sandbox);
                 SandboxState.LoadTwo();
 

@@ -102,11 +102,6 @@ public class Zone extends Component
     public void Update()
     {
         super.Update();
-
-        Debug.addDebug("Tangible Type: " + tangibleType);
-        Debug.addDebug("Top Left Touch: " + topLeftTouch);
-        Debug.addDebug("isPowered: " + isPowered);
-
         detectTangibleType();
         switch(tangibleType){
             case NoTangible:

@@ -52,8 +52,8 @@ public class Component
     public void Update()
     {
         //Debugs
-        Debug.addDebug("TouchList: " + touchList.toString());
-        Debug.addDebug("Pos: " + Bounds.x + "," + Bounds.y);
+        //Debug.addDebug("TouchList: " + touchList.toString());
+        //Debug.addDebug("Pos: " + Bounds.x + "," + Bounds.y);
         processTouch();
 
         if (Bounds.overlaps(SandboxState.gui.getButton(SandboxState.Buttons.Clear.name()).Bounds))

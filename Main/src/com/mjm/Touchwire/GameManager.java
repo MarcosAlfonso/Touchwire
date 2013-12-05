@@ -75,6 +75,12 @@ public class GameManager implements ApplicationListener
     public static Texture lightButtonTexture;
     public static Texture SelectedTerminalTexture;
     public static Texture SwitchButton;
+    public static Texture Credits;
+    public static Texture EXIT;
+    public static Texture CREDITS;
+    public static Texture LEARNING;
+    public static Texture SANDBOX;
+    public static Texture TitleScreen;
 
     public static DebugDisplay debugText;
     public static DebugDisplayTimed debugTimed;
@@ -115,6 +121,12 @@ public class GameManager implements ApplicationListener
         tangibleZoneButton = new Texture(Gdx.files.internal("GUI/newTangibleZoneButton.png"));
         backButton = new Texture(Gdx.files.internal("GUI/newbackButton.png"));
         SwitchButton = new Texture(Gdx.files.internal("GUI/SwitchButton.png"));
+        Credits = new Texture(Gdx.files.internal("GUI/credits.png"));
+        EXIT = new Texture(Gdx.files.internal("GUI/EXIT.png"));
+        CREDITS = new Texture(Gdx.files.internal("GUI/CREDITSbutton.png"));
+        LEARNING = new Texture(Gdx.files.internal("GUI/LEARNING.png"));
+        SANDBOX = new Texture(Gdx.files.internal("GUI/SANDBOX.png"));
+        TitleScreen = new Texture(Gdx.files.internal("GUI/mainTitle.png"));
 
         //Sets up custom input processing
         Gdx.input.setInputProcessor(input);
@@ -141,7 +153,7 @@ public class GameManager implements ApplicationListener
     public void render()
     {
         //Clears screen
-        Gdx.gl.glClearColor(.53f, .75f, .89f, 1);
+        Gdx.gl.glClearColor(.24f, .34f, .65f, 1);
         Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
         //Sets campera position and updates/applies

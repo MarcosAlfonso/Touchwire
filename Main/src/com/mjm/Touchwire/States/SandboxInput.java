@@ -8,32 +8,28 @@ import com.mjm.Touchwire.Entities.Terminal;
 
 import java.io.Console;
 
-public class SandboxInput implements InputProcessor
-{
+public class SandboxInput implements InputProcessor {
 
     public static Terminal lastTerminal = null;
+    public static int tempWireID = -1;
 
     @Override
-    public boolean keyDown(int keycode)
-    {
+    public boolean keyDown(int keycode) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public boolean keyUp(int keycode)
-    {
+    public boolean keyUp(int keycode) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public boolean keyTyped(char character)
-    {
+    public boolean keyTyped(char character) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button)
-    {
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         //Flips y because you have to okay?
         int flippedY = GameManager.ScreenY - screenY / GameManager.ResolutionResolver;
 
@@ -42,133 +38,131 @@ public class SandboxInput implements InputProcessor
         int halfY = flippedY;
 
         //BUTTON STUFF
-        if (SandboxState.gui.getButton(SandboxState.Buttons.Battery.name()).Bounds.contains(halfX, halfY))
-        {
-            GameManager.debugTimed.addDebug("Battery Spawned", 1);
-            SandboxState.board.components.add(new Battery(new Vector2(halfX, halfY)));
+        //Sandbox Gui
+        if (!SandboxState.learningMode) {
+            if (SandboxState.sandboxGui.getButton(SandboxState.Buttons.Battery.name()).Bounds.contains(halfX, halfY)) {
+                GameManager.debugTimed.addDebug("Battery Spawned", 1);
+                SandboxState.board.components.add(new Battery(new Vector2(halfX, halfY)));
+            } else if (SandboxState.sandboxGui.getButton(SandboxState.Buttons.Light.name()).Bounds.contains(halfX, halfY)) {
+                GameManager.debugTimed.addDebug("Light Zone Spawned", 1);
+                SandboxState.board.components.add(new Light(new Vector2(halfX, halfY)));
+            } else if (SandboxState.sandboxGui.getButton(SandboxState.Buttons.Tangible.name()).Bounds.contains(halfX, halfY)) {
+                GameManager.debugTimed.addDebug("Tangible Zone Spawned", 1);
+                SandboxState.board.components.add(new Zone(new Vector2(halfX, halfY)));
+            } else if (SandboxState.sandboxGui.getButton(SandboxState.Buttons.Switch.name()).Bounds.contains(halfX, halfY)) {
+                GameManager.debugTimed.addDebug("Switch Spawned", 1);
+                SandboxState.board.components.add(new Switch(new Vector2(halfX, halfY)));
+            }
 
         }
-        else if (SandboxState.gui.getButton(SandboxState.Buttons.Clear.name()).Bounds.contains(halfX, halfY))
-        {
+
+        //Generic Gui
+        if (SandboxState.gui.getButton(SandboxState.Buttons.Back.name()).Bounds.contains(halfX, halfY)) {
+            GameManager.setState(GameManager.GameStates.MainMenu);
+        } else if (SandboxState.gui.getButton(SandboxState.Buttons.Clear.name()).Bounds.contains(halfX, halfY)) {
             SandboxState.board.components.clear();
             lastTerminal = null;
             GameManager.debugTimed.addDebug("Board Cleared", 3);
         }
-        else if (SandboxState.gui.getButton(SandboxState.Buttons.Light.name()).Bounds.contains(halfX, halfY))
-        {
-            GameManager.debugTimed.addDebug("Tangible Zone Spawned", 1);
-            SandboxState.board.components.add(new Light(new Vector2(halfX, halfY)));
-        }
-        else if (SandboxState.gui.getButton(SandboxState.Buttons.Tangible.name()).Bounds.contains(halfX, halfY))
-        {
-            GameManager.debugTimed.addDebug("Tangible Zone Spawned", 1);
-            SandboxState.board.components.add(new Zone(new Vector2(halfX, halfY)));
-        }
-        else if (SandboxState.gui.getButton(SandboxState.Buttons.Switch.name()).Bounds.contains(halfX, halfY))
-        {
-            GameManager.debugTimed.addDebug("Switch Spawned", 1);
-            SandboxState.board.components.add(new Switch(new Vector2(halfX, halfY)));
-        }
-        else if (SandboxState.gui.getButton(SandboxState.Buttons.Back.name()).Bounds.contains(halfX, halfY))
-        {
-            GameManager.setState(GameManager.GameStates.MainMenu);
-        }
 
         //Iterate through all the components on the board, so we can check if anything is getting touched
-        for (Component comp : SandboxState.board.components)
-        {
+        for (Component comp : SandboxState.board.components) {
 
             //If they touch an existing component, add pointer to component touchList
-            if (comp.Bounds.contains(halfX, halfY))
-            {
+            if (comp.Bounds.contains(halfX, halfY)) {
                 comp.touchList.add(pointer);
                 if (comp instanceof Switch)
-                    ((Switch) comp).isClosed=!((Switch) comp).isClosed;
+                    ((Switch) comp).isClosed = !((Switch) comp).isClosed;
                 return true;
             }
 
             //WIRING STUFF
             //If they touch a positive terminal
-            else if (comp.posTerminal.Bounds.contains(halfX, halfY))
-            {
-                //If no terminal selected yet
-                if (lastTerminal == null)
-                {
-                    GameManager.debugTimed.addDebug("Now select a negative terminal", 5);
-                    lastTerminal = comp.posTerminal;
-                }
-                //If they select a positive terminal after starting with positive, error
-                else if (lastTerminal.isPositive)
-                {
-                    GameManager.debugTimed.addDebug("ERROR: Please select a negative terminal", 3);
+            else if (comp.posTerminal.Bounds.contains(halfX, halfY)) {
+                lastTerminal = comp.posTerminal;
+                tempWireID = button;
 
-                    //If terminal is negative, and not from the same component, wire
-                }
-                else if (!lastTerminal.isPositive && comp != lastTerminal.Component)
-                {
-                    GameManager.debugTimed.addDebug("DEBUG: Wire Created", 3);
-                    Wire newWire = new Wire(comp.posTerminal,lastTerminal);
-                    lastTerminal.wire = newWire;
-                    comp.posTerminal.wire = newWire;
-                    lastTerminal = null;
-                }
+                if (comp.posTerminal.wire != null)
+                    comp.posTerminal.wire.Delete();
+
                 return true;
-            }
-            //If they touch a negative terminal
-            else if (comp.negTerminal.Bounds.contains(halfX, halfY))
-            {
+            } else if (comp.negTerminal.Bounds.contains(halfX, halfY)) {
+                lastTerminal = comp.negTerminal;
+                tempWireID = button;
 
-                //If no terminal selected yet
-                if (lastTerminal == null)
-                {
-                    GameManager.debugTimed.addDebug("Now select a positive terminal", 5);
-                    lastTerminal = comp.negTerminal;
-                }
+                if (comp.negTerminal.wire != null)
+                    comp.negTerminal.wire.Delete();
 
-                //If they select a negative terminal after starting with negative, error
-                else if (!lastTerminal.isPositive)
-                {
-                    GameManager.debugTimed.addDebug("ERROR: Please select a positive terminal", 3);
-
-                    //If terminal is negative, and not from the same component, wire
-                }
-                else if (lastTerminal.isPositive && comp != lastTerminal.Component)
-                {
-                    GameManager.debugTimed.addDebug("DEBUG: Wire Created", 3);
-                    Wire newWire = new Wire(lastTerminal, comp.negTerminal);
-                    lastTerminal.wire = newWire;
-                    comp.negTerminal.wire = newWire;
-                    lastTerminal = null;
-                }
                 return true;
             }
         }
 
         lastTerminal = null;
+        tempWireID = -1;
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button)
-    {
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        //Flips y because you have to okay?
+        int flippedY = GameManager.ScreenY - screenY / GameManager.ResolutionResolver;
+
+        //Hacky shit to make resolution work on both desktop and tablet
+        int halfX = screenX / GameManager.ResolutionResolver;
+        int halfY = flippedY;
+
+        //Iterate through all the components on the board, so we can check if anything is getting touched
+        for (Component comp : SandboxState.board.components) {
+            //WIRING STUFF
+            //If they touch a positive terminal
+            if (lastTerminal != null && lastTerminal.isPositive) {
+                if (comp.negTerminal.Bounds.contains(halfX, halfY) && lastTerminal != null && button == tempWireID) {
+                    if (comp != lastTerminal.Component) {
+                        //GameManager.debugTimed.addDebug("DEBUG: Wire Created", 3);
+                        Wire newWire = new Wire(lastTerminal, comp.negTerminal);
+                        lastTerminal.wire = newWire;
+                        comp.negTerminal.wire = newWire;
+                        lastTerminal = null;
+                    }
+                }
+                if (comp.posTerminal.Bounds.contains(halfX, halfY) && lastTerminal != null && button == tempWireID) {
+                    GameManager.debugTimed.addDebug("Can't wire positive to positive");
+                }
+            }
+            if (lastTerminal != null && !lastTerminal.isPositive) {
+                if (comp.posTerminal.Bounds.contains(halfX, halfY) && lastTerminal != null && button == tempWireID) {
+                    if (comp != lastTerminal.Component) {
+                        //GameManager.debugTimed.addDebug("DEBUG: Wire Created", 3);
+                        Wire newWire = new Wire(comp.posTerminal, lastTerminal);
+                        lastTerminal.wire = newWire;
+                        comp.posTerminal.wire = newWire;
+                        lastTerminal = null;
+                    }
+                }
+                if (comp.posTerminal.Bounds.contains(halfX, halfY) && lastTerminal != null && button == tempWireID) {
+                    GameManager.debugTimed.addDebug("Can't wire negative to negative");
+                }
+            }
+        }
+
+
+        lastTerminal = null;
+        tempWireID = -1;
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer)
-    {
+    public boolean mouseMoved(int screenX, int screenY) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public boolean mouseMoved(int screenX, int screenY)
-    {
-        return false;  //To change body of implemented methods use File | Settings | File Templates.
-    }
-
-    @Override
-    public boolean scrolled(int amount)
-    {
+    public boolean scrolled(int amount) {
         return false;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }
